@@ -209,7 +209,7 @@ carbbev_upc %>%
     select(parent_company, vendor, brand) %>%
     distinct() %>%
     arrange(parent_company, vendor, brand) %>%
-    head(100)
+    head(20)
 ```
 
 # Sales Information
