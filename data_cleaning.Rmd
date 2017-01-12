@@ -1,0 +1,320 @@
+---
+title: "Dynamic Brand Equity"
+output:
+  html_notebook:
+    code_folding: show
+    css: style.css
+    number_sections: yes
+    theme: flatly
+    toc: yes
+    toc_float: yes
+---
+
+# Basic Setup
+
+```{r setup, include=FALSE}
+# Set options for the rmarkdown file
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.align = 'center', width = 100)
+invisible(Sys.setlocale("LC_ALL", "en_US.UTF-8"))
+options(digits = 4, width = 220) # Prevent printing in scientific notation
+```
+
+```{r}
+# Use pacman to load packages
+pacman::p_load(tidyverse, stringr, pander)
+
+# Set working directory to the external drive containing the IRI dataset
+volume_dir <- "/Volumes/ADS_235/Academic Dataset External"
+
+base_dir <- ''
+data_dir <- paste0(base_dir, "data/")
+viz_dir <- paste0(base_dir, "viz/")
+
+dir.create(data_dir, showWarnings = FALSE)
+dir.create(viz_dir, showWarnings = FALSE)
+```
+
+# Data Size Assessment
+
+Before we begin loading data, let's start by assessing the data size of each of the summary files.
+
+## Tissue Category
+
+We use the shell construction `find . -name "myfile" | xargs wc - l` to recursively find a file with a particular regular expression construction and then perform the line count.
+
+```{r}
+tissue_category <- "factiss"
+
+if (!file.exists(paste0(data_dir, "tissue_wc.RDS"))) {
+    
+    tissue_wc <- system(paste0("cd '", volume_dir,"';
+            find . -name '", tissue_category, "_drug*' -o -name '", tissue_category, "_groc*' | xargs wc -l"), intern = TRUE)
+
+    saveRDS(tissue_wc, paste0(data_dir, "tissue_wc.RDS"))
+}
+```
+
+The table below lists the file paths within the ``r volume_dir`` folder and the number of records.
+
+```{r results = 'asis'}
+tissue_wc <- readRDS(paste0(data_dir, "tissue_wc.RDS"))
+
+tissue_weekly_files <- 
+    tissue_wc %>%
+        stringr::str_trim(side = "left") %>%
+        stringr::str_split_fixed(" ", n = 2) %>%
+        as_tibble() %>%
+        mutate(records = V1, file = V2) %>%
+        select(file, records)
+
+tissue_weekly_files %>% 
+    dplyr::mutate(records = prettyNum(records, big.mark = ",")) %>%
+    # Use the fact that the last couplet of 4 digits create the proper ordering
+    dplyr::arrange(as.integer(str_replace(str_sub(file, -9,-1), "_",""))) %>%
+    pander()
+```
+
+## Carbonated Beverage Category
+
+We then do the same process for the carbonated beverage category.
+
+```{r}
+carbbev_category <- "carbbev"
+
+if (!file.exists(paste0(data_dir, "carbbev_wc.RDS"))) {
+
+    carbbev_wc <- system(paste0("cd '", volume_dir,"';
+                find . -name '", carbbev_category, "_drug*' -o -name '", carbbev_category, "_groc*' | xargs wc -l"), intern = TRUE)
+    
+    saveRDS(carbbev_wc, paste0(data_dir, "carbbev_wc.RDS"))
+}
+```
+
+We note the size difference. However, there are different sub-categories within the carbonated beverage category.
+
+```{r results = 'asis'}
+carbbev_wc <- readRDS(paste0(data_dir, "carbbev_wc.RDS"))
+
+carbbev_weekly_files <- 
+    carbbev_wc %>%
+        stringr::str_trim(side = "left") %>%
+        stringr::str_split_fixed(" ", n = 2) %>%
+        as_tibble() %>%
+        mutate(records = V1, file = V2) %>%
+        select(file, records)
+
+carbbev_weekly_files %>% 
+    dplyr::mutate(records = prettyNum(records, big.mark = ",")) %>%
+    # Use the fact that the last couplet of 4 digits create the proper ordering
+    dplyr::arrange(as.integer(str_replace(str_sub(file, -9,-1), "_",""))) %>%
+    pander()
+```
+
+# UPC Lookup Table
+
+Next we load the UPC lookup tables. From the documentation's explanation, we need three as the UPC descriptions were changed between periods.
+
+## Tissue Category
+
+Each UPC lookup table has the same structure (defined in the documentation), so we load the three and combine and eliminate unnecessary columns.
+
+```{r}
+tissue_upc_year_1_to_6 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_tissue.xls")) %>%
+    dplyr::mutate(iri_year = '1-6')
+
+tissue_upc_year_7 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_factiss.xlsx")) %>%
+    dplyr::mutate(iri_year = '7')
+
+tissue_upc_year_8_to_11 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_factiss.xlsx")) %>%
+    dplyr::mutate(iri_year = '8-11')
+
+tissue_upc <- 
+    bind_rows(
+     tissue_upc_year_1_to_6, tissue_upc_year_7, tissue_upc_year_8_to_11
+    ) %>% 
+    rename(
+        large_category = L1
+        , small_category = L2
+        , parent_company = L3
+        , vendor = L4
+        , brand = L5
+        , upc = UPC
+    ) %>%
+    # These positions are outlined in the documentation
+    select(1,2,3,4,5,8, 15:22) %>%
+    setNames(tolower(make.names(names(.)))) %>%
+    select(iri_year, everything())
+```
+
+Below is a table of the first 100 records.
+
+```{r}
+tissue_upc %>% 
+    select(parent_company, vendor, brand) %>%
+    distinct() %>%
+    arrange(parent_company, vendor, brand) %>%
+    head(100)
+```
+
+## Carbonated Beverage Category
+
+```{r}
+carbbev_upc_year_1_to_6 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_carbbev.xls")) %>%
+    dplyr::mutate(iri_year = '1-6')
+
+carbbev_upc_year_7 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_carbbev.xlsx")) %>%
+    dplyr::mutate(iri_year = '7')
+
+carbbev_upc_year_8_to_11 <- 
+    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_carbbev.xlsx")) %>%
+    dplyr::mutate(iri_year = '8-11')
+
+carbbev_upc <- 
+    bind_rows(
+     carbbev_upc_year_1_to_6, carbbev_upc_year_7, carbbev_upc_year_8_to_11
+    ) %>% 
+    rename(
+        large_category = L1
+        , small_category = L2
+        , parent_company = L3
+        , vendor = L4
+        , brand = L5
+        , upc = UPC
+    ) %>%
+    # These positions are outlined in the documentation
+    select(1,2,3,4,5,8, 15:22) %>%
+    setNames(tolower(make.names(names(.)))) %>%
+    select(iri_year, everything())
+```
+
+There are six *sub-categories*:
+
+```{r results = 'asis'}
+carbbev_upc %>%
+    group_by(small_category) %>%
+    summarise(`UPC's` = n()) %>%
+    arrange(`UPC's`) %>%
+    pander()
+```
+
+Even excluding the categories, there are 1,019 *company / vender / brand* combinations. Below are the first 100:
+
+```{r}
+carbbev_upc %>% 
+    select(parent_company, vendor, brand) %>%
+    distinct() %>%
+    arrange(parent_company, vendor, brand) %>%
+    head(100)
+```
+
+# Sales Information
+
+To load the sales information we can write a function that will load each file using `read_table` and then add the year information as the first column.
+
+```{r}
+fn_load_weekly_file <- function(filename) {
+    year_num <- as.integer(str_match(filename, "Year([:digit:]+)")[, 2])
+    read_table(paste0(volume_dir, str_replace(filename, ".", "")), progress = FALSE) %>%
+        mutate(iri_year = year_num) %>%
+        select(iri_year, everything())
+}
+```
+
+
+## Tissue Category
+
+```{r}
+tissue_files <- tissue_weekly_files$file[-length(tissue_weekly_files$file)]
+tissue_weekly <- bind_rows(lapply(tissue_files, fn_load_weekly_file))
+```
+
+We can show that all tissue UPC's are **`r table(sapply(tissue_upc$upc, nchar))` characters by 
+
+```{r results = 'asis'}
+table(sapply(tissue_upc$upc, nchar)) %>%
+    pander()
+```
+
+Now we need to create a UPC from the components and properly name the columns.
+
+```{r}
+tissue_weekly2 <- 
+    tissue_weekly %>%
+        mutate(
+            upc = paste(str_pad(SY, width = 2, "left", "0"), str_pad(GE, width = 2, "left", "0"), 
+                           str_pad(VEND, width = 5, "left", "0"), str_pad(ITEM, width = 5, "left", "0"), sep = "-")
+            , avg_price = DOLLARS / UNITS
+        ) %>% 
+        rename(feature = `F`, display = D, price_reduction = PR) %>%
+        setNames(tolower(make.names(names(.)))) %>%
+        select(iri_year, iri_key, week, upc, units, dollars, avg_price, feature, display, price_reduction)
+```
+
+Now, let's check that this dataset is indeed at the store (iri_key) - week - upc level of detail. `There is an issue here - I am identifying which are duplicated`
+
+```{r results = 'asis'}
+data_frame(
+    `Record Count` = tissue_weekly2 %>% nrow()
+    , `Store - Week - UPC Combinations` = tissue_weekly2 %>% select(iri_key, week, upc) %>% distinct() %>% nrow()
+) %>%
+    pander()
+```
+
+With that assurance, let's pull in the details about each UPC. We do this for each year window because the documentation indicated that UPC information (potentially including company) changed between the time windows. We then do a check that no records were dropped in the `inner join`.
+
+```{r results = 'asis'}
+tissue_weekly_1_to_6 <- 
+    tissue_weekly2 %>%
+        filter(iri_year <= 6) %>%
+        inner_join(
+            tissue_upc %>%
+                filter(iri_year == "1-6") %>%
+                select(-iri_year)
+            , by = c("upc" = 'upc')
+        )
+
+tissue_weekly_7 <- 
+    tissue_weekly2 %>%
+        filter(iri_year == 7) %>%
+        inner_join(
+            tissue_upc %>%
+                filter(iri_year == "7") %>%
+                select(-iri_year)
+            , by = c("upc" = 'upc')
+        )
+
+tissue_weekly_8_to_11 <- 
+    tissue_weekly2 %>%
+        filter(iri_year >= 8) %>%
+        inner_join(
+            tissue_upc %>%
+                filter(iri_year == "8-11") %>%
+                select(-iri_year)
+            , by = c("upc" = 'upc')
+        )
+
+data_frame(
+    Years = c("1-6", "7", "8-11")
+    , `Record Count in Weekly Data` = sapply(list(filter(tissue_weekly2, iri_year <= 6), 
+                                                  filter(tissue_weekly2, iri_year == 7), filter(tissue_weekly2, iri_year >= 8)), nrow)
+    , `Record Count in Joined Data` = sapply(list(tissue_weekly_1_to_6, tissue_weekly_7, tissue_weekly_8_to_11), nrow)
+) %>%
+    pander()
+```
+
+This passes our data integrity check, so we'll combine the 3 time windows datasets.
+
+```{r}
+tissue_final <- bind_rows(tissue_weekly_1_to_6, tissue_weekly_7, tissue_weekly_8_to_11)
+
+tissue_final %>%
+    head(10)
+```
+
+
+## Carbonated Beverage Category
