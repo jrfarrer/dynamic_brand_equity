@@ -61,16 +61,18 @@ tissue_wc <- readRDS(paste0(data_dir, "tissue_wc.RDS"))
 
 tissue_weekly_files <- 
     tissue_wc %>%
-        stringr::str_trim(side = "left") %>%
-        stringr::str_split_fixed(" ", n = 2) %>%
-        as_tibble() %>%
-        mutate(records = V1, file = V2) %>%
-        select(file, records)
-
-tissue_weekly_files %>% 
-    dplyr::mutate(records = prettyNum(records, big.mark = ",")) %>%
+    stringr::str_trim(side = "left") %>%
+    stringr::str_split_fixed(" ", n = 2) %>%
+    tibble::as_tibble() %>%
+    rename(records = V1, file = V2) %>%
+    dplyr::mutate(records = as.integer(records)) %>%
+    dplyr::mutate(records_clean = prettyNum(records, big.mark = ",")) %>%
     # Use the fact that the last couplet of 4 digits create the proper ordering
     dplyr::arrange(as.integer(str_replace(str_sub(file, -9,-1), "_",""))) %>%
+    dplyr::select(file, records, records_clean)
+
+tissue_weekly_files %>% 
+    select(file, records_clean)
     pander()
 ```
 
@@ -97,16 +99,19 @@ carbbev_wc <- readRDS(paste0(data_dir, "carbbev_wc.RDS"))
 
 carbbev_weekly_files <- 
     carbbev_wc %>%
-        stringr::str_trim(side = "left") %>%
-        stringr::str_split_fixed(" ", n = 2) %>%
-        as_tibble() %>%
-        mutate(records = V1, file = V2) %>%
-        select(file, records)
-
-carbbev_weekly_files %>% 
-    dplyr::mutate(records = prettyNum(records, big.mark = ",")) %>%
+    stringr::str_trim(side = "left") %>%
+    stringr::str_split_fixed(" ", n = 2) %>%
+    tibble::as_tibble() %>%
+    rename(records = V1, file = V2) %>%
+    dplyr::mutate(records = as.integer(records)) %>%
+    dplyr::mutate(records_clean = prettyNum(records, big.mark = ",")) %>%
     # Use the fact that the last couplet of 4 digits create the proper ordering
     dplyr::arrange(as.integer(str_replace(str_sub(file, -9,-1), "_",""))) %>%
+    dplyr::select(file, records, records_clean)
+    
+
+carbbev_weekly_files %>% 
+    select(file, records_clean)
     pander()
 ```
 
@@ -219,18 +224,53 @@ To load the sales information we can write a function that will load each file u
 ```{r}
 fn_load_weekly_file <- function(filename) {
     year_num <- as.integer(str_match(filename, "Year([:digit:]+)")[, 2])
-    read_table(paste0(volume_dir, str_replace(filename, ".", "")), progress = FALSE) %>%
-        mutate(iri_year = year_num) %>%
-        select(iri_year, everything())
+    drug_or_groc <- str_match(filename, "drug|groc")[, 1]
+    column_widths <- c(7, 5, 3, 3, 6, 6, 6, 9, 5, 2, 2)
+    column_names <- c('IRI_KEY','WEEK','SY','GE','VEND','ITEM','UNITS','DOLLARS','F','D','PR')
+    
+    read_fwf(paste0(volume_dir, str_replace(filename, ".", "")), 
+             fwf_widths(column_widths, column_names), skip = 1, progress = FALSE) %>%
+        mutate(iri_year = year_num, id = row_number(), store_type = drug_or_groc) %>%
+        select(iri_year, id, store_type, everything())
+}
+
+fn_integrity_check <- function(dt) {
+    records <- dt %>% nrow()
+    unique_records <- 
+        dt %>%
+        select(IRI_KEY, WEEK, SY, GE, VEND, ITEM) %>%
+        distinct() %>%
+        nrow()
+    return(data_frame(records_raw = records, unique_records = unique_records))
 }
 ```
 
 
 ## Tissue Category
 
-```{r}
+We load each of the store datasets and perform data integrity checks. We show that the number of records load is one less than we found with the `wc -l` shell command (due to the header) and that the number of records unique on store / week / upc (`SY`, `GE`, `VEND`, `ITEM`) is the total number of records loaded. 
+
+```{r results = 'asis'}
 tissue_files <- tissue_weekly_files$file[-length(tissue_weekly_files$file)]
-tissue_weekly <- bind_rows(lapply(tissue_files, fn_load_weekly_file))
+tissue_files_list <- lapply(tissue_files, fn_load_weekly_file)
+tissue_weekly <- bind_rows(tissue_files_list)
+
+lapply(tissue_files_list, fn_integrity_check) %>%
+    bind_rows() %>%
+    bind_rows(data_frame(records_raw = sum(.$records_raw), unique_records = sum(.$unique_records))) %>%
+    bind_cols(tissue_weekly_files) %>%
+    mutate(
+         n = n()
+         , `Pass?` = if_else(file == "total", 
+                            if_else(records_raw == (records - n + 1) & unique_records == records_raw, "Yes","No"), 
+                            if_else(records_raw == (records - 1) & unique_records == records_raw, "Yes","No"))
+    ) %>%
+    mutate(
+        `Records Loaded` = prettyNum(records_raw, big.mark = ',')
+        , `Unique on Store/Week/UPC` = prettyNum(unique_records, big.mark = ',')
+    ) %>%
+    select(File = file, Records = records_clean, `Records Loaded`, `Unique on Store/Week/UPC`, `Pass?`) %>%
+    pander(split.table = Inf)
 ```
 
 We can show that all tissue UPC's are **`r table(sapply(tissue_upc$upc, nchar))` characters by 
@@ -255,7 +295,7 @@ tissue_weekly2 <-
         select(iri_year, iri_key, week, upc, units, dollars, avg_price, feature, display, price_reduction)
 ```
 
-Now, let's check that this dataset is indeed at the store (iri_key) - week - upc level of detail. `There is an issue here - I am identifying which are duplicated`
+Now, let's check that this dataset is indeed at the store (iri_key) - week - upc level of detail. 
 
 ```{r results = 'asis'}
 data_frame(
