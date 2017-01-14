@@ -266,6 +266,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Dynamic Brand Equity</h1>
+<h4 class="date"><em>January 14, 2017 13:25</em></h4>
 
 </div>
 
@@ -277,7 +278,7 @@ div.tocify {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBVc2UgcGFjbWFuIHRvIGxvYWQgcGFja2FnZXNcbnBhY21hbjo6cF9sb2FkKHRpZHl2ZXJzZSwgc3RyaW5nciwgcGFuZGVyKVxuIyBTZXQgd29ya2luZyBkaXJlY3RvcnkgdG8gdGhlIGV4dGVybmFsIGRyaXZlIGNvbnRhaW5pbmcgdGhlIElSSSBkYXRhc2V0XG52b2x1bWVfZGlyIDwtIFwiL1ZvbHVtZXMvQURTXzIzNS9BY2FkZW1pYyBEYXRhc2V0IEV4dGVybmFsXCJcbmJhc2VfZGlyIDwtICcnXG5kYXRhX2RpciA8LSBwYXN0ZTAoYmFzZV9kaXIsIFwiZGF0YS9cIilcbnZpel9kaXIgPC0gcGFzdGUwKGJhc2VfZGlyLCBcInZpei9cIilcbmRpci5jcmVhdGUoZGF0YV9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKVxuZGlyLmNyZWF0ZSh2aXpfZGlyLCBzaG93V2FybmluZ3MgPSBGQUxTRSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBVc2UgcGFjbWFuIHRvIGxvYWQgcGFja2FnZXNcbnBhY21hbjo6cF9sb2FkKHRpZHl2ZXJzZSwgc3RyaW5nciwgcGFuZGVyKVxuIyBTZXQgd29ya2luZyBkaXJlY3RvcnkgdG8gdGhlIGV4dGVybmFsIGRyaXZlIGNvbnRhaW5pbmcgdGhlIElSSSBkYXRhc2V0XG52b2x1bWVfZGlyIDwtIFwiL1ZvbHVtZXMvQURTXzIzNS9BY2FkZW1pYyBEYXRhc2V0IEV4dGVybmFsXCJcbmJhc2VfZGlyIDwtICcnXG5kYXRhX2RpciA8LSBwYXN0ZTAoYmFzZV9kaXIsIFwiZGF0YS9cIilcbnZpel9kaXIgPC0gcGFzdGUwKGJhc2VfZGlyLCBcInZpei9cIilcbmRpci5jcmVhdGUoZGF0YV9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKVxuZGlyLmNyZWF0ZSh2aXpfZGlyLCBzaG93V2FybmluZ3MgPSBGQUxTRSlcbnBhbmRlck9wdGlvbnMoJ2JpZy5tYXJrJywgJywnKVxuYGBgIn0= -->
 <pre class="r"><code># Use pacman to load packages
 pacman::p_load(tidyverse, stringr, pander)
 # Set working directory to the external drive containing the IRI dataset
@@ -286,7 +287,8 @@ base_dir &lt;- ''
 data_dir &lt;- paste0(base_dir, &quot;data/&quot;)
 viz_dir &lt;- paste0(base_dir, &quot;viz/&quot;)
 dir.create(data_dir, showWarnings = FALSE)
-dir.create(viz_dir, showWarnings = FALSE)</code></pre>
+dir.create(viz_dir, showWarnings = FALSE)
+panderOptions('big.mark', ',')</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -296,7 +298,7 @@ dir.create(viz_dir, showWarnings = FALSE)</code></pre>
 <p>Before we begin loading data, let’s start by assessing the data size of each of the summary files.</p>
 <div id="tissue-category" class="section level2">
 <h2><span class="header-section-number">2.1</span> Tissue Category</h2>
-<p>We use the shell construction <code>find . -name &quot;myfile&quot; | xargs wc - l</code> to recursively find a file with a particular regular expression construction and then perform the line count.</p>
+<p>We use the shell command <code>find . -name &quot;myfile&quot; | xargs wc - l</code> to recursively find a file with a particular regular expression construction and then perform the line count.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX2NhdGVnb3J5IDwtIFwiZmFjdGlzc1wiXG5pZiAoIWZpbGUuZXhpc3RzKHBhc3RlMChkYXRhX2RpciwgXCJ0aXNzdWVfd2MuUkRTXCIpKSkge1xuICAgIFxuICAgIHRpc3N1ZV93YyA8LSBzeXN0ZW0ocGFzdGUwKFwiY2QgJ1wiLCB2b2x1bWVfZGlyLFwiJztcbiAgICAgICAgICAgIGZpbmQgLiAtbmFtZSAnXCIsIHRpc3N1ZV9jYXRlZ29yeSwgXCJfZHJ1ZyonIC1vIC1uYW1lICdcIiwgdGlzc3VlX2NhdGVnb3J5LCBcIl9ncm9jKicgfCB4YXJncyB3YyAtbFwiKSwgaW50ZXJuID0gVFJVRSlcbiAgICBzYXZlUkRTKHRpc3N1ZV93YywgcGFzdGUwKGRhdGFfZGlyLCBcInRpc3N1ZV93Yy5SRFNcIikpXG59XG5gYGAifQ== -->
@@ -313,7 +315,7 @@ if (!file.exists(paste0(data_dir, &quot;tissue_wc.RDS&quot;))) {
 <p>The table below lists the file paths within the <code>/Volumes/ADS_235/Academic Dataset External</code> folder and the number of records.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX3djIDwtIHJlYWRSRFMocGFzdGUwKGRhdGFfZGlyLCBcInRpc3N1ZV93Yy5SRFNcIikpXG50aXNzdWVfd2Vla2x5X2ZpbGVzIDwtIFxuICAgIHRpc3N1ZV93YyAlPiVcbiAgICBzdHJpbmdyOjpzdHJfdHJpbShzaWRlID0gXCJsZWZ0XCIpICU+JVxuICAgIHN0cmluZ3I6OnN0cl9zcGxpdF9maXhlZChcIiBcIiwgbiA9IDIpICU+JVxuICAgIHRpYmJsZTo6YXNfdGliYmxlKCkgJT4lXG4gICAgcmVuYW1lKHJlY29yZHMgPSBWMSwgZmlsZSA9IFYyKSAlPiVcbiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHMgPSBhcy5pbnRlZ2VyKHJlY29yZHMpKSAlPiVcbiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHNfY2xlYW4gPSBwcmV0dHlOdW0ocmVjb3JkcywgYmlnLm1hcmsgPSBcIixcIikpICU+JVxuICAgICMgVXNlIHRoZSBmYWN0IHRoYXQgdGhlIGxhc3QgY291cGxldCBvZiA0IGRpZ2l0cyBjcmVhdGUgdGhlIHByb3BlciBvcmRlcmluZ1xuICAgIGRwbHlyOjphcnJhbmdlKGFzLmludGVnZXIoc3RyX3JlcGxhY2Uoc3RyX3N1YihmaWxlLCAtOSwtMSksIFwiX1wiLFwiXCIpKSkgJT4lXG4gICAgZHBseXI6OnNlbGVjdChmaWxlLCByZWNvcmRzLCByZWNvcmRzX2NsZWFuKVxudGlzc3VlX3dlZWtseV9maWxlcyAlPiUgXG4gICAgc2VsZWN0KGZpbGUsIHJlY29yZHNfY2xlYW4pXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX3djIDwtIHJlYWRSRFMocGFzdGUwKGRhdGFfZGlyLCBcInRpc3N1ZV93Yy5SRFNcIikpXG50aXNzdWVfd2Vla2x5X2ZpbGVzIDwtIFxuICAgIHRpc3N1ZV93YyAlPiVcbiAgICBzdHJpbmdyOjpzdHJfdHJpbShzaWRlID0gXCJsZWZ0XCIpICU+JVxuICAgIHN0cmluZ3I6OnN0cl9zcGxpdF9maXhlZChcIiBcIiwgbiA9IDIpICU+JVxuICAgIHRpYmJsZTo6YXNfdGliYmxlKCkgJT4lXG4gICAgcmVuYW1lKHJlY29yZHMgPSBWMSwgZmlsZSA9IFYyKSAlPiVcbiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHMgPSBhcy5pbnRlZ2VyKHJlY29yZHMpKSAlPiVcbiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHNfY2xlYW4gPSBwcmV0dHlOdW0ocmVjb3JkcywgYmlnLm1hcmsgPSBcIixcIikpICU+JVxuICAgICMgVXNlIHRoZSBmYWN0IHRoYXQgdGhlIGxhc3QgY291cGxldCBvZiA0IGRpZ2l0cyBjcmVhdGUgdGhlIHByb3BlciBvcmRlcmluZ1xuICAgIGRwbHlyOjphcnJhbmdlKGFzLmludGVnZXIoc3RyX3JlcGxhY2Uoc3RyX3N1YihmaWxlLCAtOSwtMSksIFwiX1wiLFwiXCIpKSkgJT4lXG4gICAgZHBseXI6OnNlbGVjdChmaWxlLCByZWNvcmRzLCByZWNvcmRzX2NsZWFuKVxudGlzc3VlX3dlZWtseV9maWxlcyAlPiUgXG4gICAgc2VsZWN0KGZpbGUsIHJlY29yZHMgPSByZWNvcmRzX2NsZWFuKSAlPiVcbiAgICBwYW5kZXIoanVzdGlmeSA9IGMoXCJsZWZ0XCIsXCJyaWdodFwiKSlcbmBgYCJ9 -->
 <pre class="r"><code>tissue_wc &lt;- readRDS(paste0(data_dir, &quot;tissue_wc.RDS&quot;))
 tissue_weekly_files &lt;- 
     tissue_wc %&gt;%
@@ -327,18 +329,115 @@ tissue_weekly_files &lt;-
     dplyr::arrange(as.integer(str_replace(str_sub(file, -9,-1), &quot;_&quot;,&quot;&quot;))) %&gt;%
     dplyr::select(file, records, records_clean)
 tissue_weekly_files %&gt;% 
-    select(file, records_clean)</code></pre>
+    select(file, records = records_clean) %&gt;%
+    pander(justify = c(&quot;left&quot;,&quot;right&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6MjN9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDFWU1k2YlFCUXQ0NkZsUzA0aVpkRTNTRGJWZHMzRFBybEFWcDBWSWhnN0tBUmFnSlZlNXJxNVJEc2ZVMkNFc01CU2Zjci9UVldNMzc0OHM4M3pCaUhrb2ZsOGhydzVUQmNlbEJsYW9IVjFmRVZvL3ZGS1FPZ0RqRWNIN0hmNzcxR1EwLzNYMXpMSzB5RFpINE93akl1aU9mcUgvSHp5S2FVQ2lwS1RaYWM4QysvSjJHaWFVajVsVkUrV3ViUkJHUjlMWTlSQVVYYXlyRTRibG9uUk5FMTh5aG1kTEhOcGd6STVsc1laZzZMNVpGbWROaXhUbzJrYUxyZGdhckxNcFEzSzlGaWFZQnFLTnBObGRWcFA5cW1XbVhzaDJ2cFVjakxHZHQ2RGJIdkhXM0lLeGJBeGR1M2RZMzkyanlDNVoyNjRUeFVYbzNUblBreW5kOXdWbDFDTUdxWFg3ajM2c3N6S0lPbTlpaDZZVnBpSWhyT20yQ2lLcmVBdHJoaVdXbmR3cWpBVDlJWVRiQXkvNFpaYThDQTNYR1BOYkVldllkaFd6eW5IaE11T1hzQ1Fzc1dad3BTUURpNHRab3kxdU9TWTJRNXVvS0dJYVhFck8zRVZiZ3dtSFJ5V1E1am80SXhqd1cvcmt3cHowOUZyd2pDODlHNjRCYnZPK3BWU1dMVTM0d2JjakZCd1JsVHY2N0FNazZBbzNPVm9tcHREVUFhN1l4NzhqdnIwRkhvTjNYUE54VEZPSWpmZjVsR1k1WWZDRDVNb1NIdnFkWjc5MlRVTzI4cmhMNVRMNWZJUERtODk4a1AyVXNaWkNsU3YrbnF0ZW11YzViM0crM05hV1IrZXdwL245TmNUNzhHTG9JaXIyTTIxVi8rMmJ2N1ltWHYxTXVZWHAxODUvU3BLVDNIYWJIT1pCRCtpcEZscEhoWG5wQ3pjMzNld3krc21keTk1bkpiTk9ZVnVzYXR2ZnRjSnM2VHBYTGVQM3Y0RGROMGdxTTRIQUFBPSJ9 -->
-<div data-pagedtable>
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["file"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records_clean"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"./Year1/External/factiss/factiss_drug_1114_1165","2":"276,046"},{"1":"./Year1/External/factiss/factiss_groc_1114_1165","2":"1,861,943"},{"1":"./Year2/External/factiss/factiss_drug_1166_1217","2":"262,577"},{"1":"./Year2/External/factiss/factiss_groc_1166_1217","2":"1,816,241"},{"1":"./Year3/External/factiss/factiss_drug_1218_1269","2":"260,883"},{"1":"./Year3/External/factiss/factiss_groc_1218_1269","2":"1,919,860"},{"1":"./Year4/External/factiss/factiss_drug_1270_1321","2":"267,729"},{"1":"./Year4/External/factiss/factiss_groc_1270_1321","2":"1,871,891"},{"1":"./Year5/External/factiss/factiss_drug_1322_1373","2":"313,035"},{"1":"./Year5/External/factiss/factiss_groc_1322_1373","2":"1,941,955"},{"1":"./Year6/External/factiss/factiss_drug_1374_1426","2":"326,100"},{"1":"./Year6/External/factiss/factiss_groc_1374_1426","2":"1,959,222"},{"1":"./Year7/External/factiss/factiss_drug_1427_1478","2":"353,290"},{"1":"./Year7/External/factiss/factiss_groc_1427_1478","2":"1,853,608"},{"1":"./Year8/factiss/factiss_drug_1479_1530","2":"395,891"},{"1":"./Year8/factiss/factiss_groc_1479_1530","2":"1,888,008"},{"1":"./Year9/factiss/factiss_drug_1531_1582","2":"371,024"},{"1":"./Year9/factiss/factiss_groc_1531_1582","2":"1,823,431"},{"1":"./Year10/factiss/factiss_drug_1583_1634","2":"356,381"},{"1":"./Year10/factiss/factiss_groc_1583_1634","2":"1,702,116"},{"1":"./Year11/factiss/factiss_drug_1635_1686","2":"359,005"},{"1":"./Year11/factiss/factiss_groc_1635_1686","2":"1,666,630"},{"1":"total","2":"23,846,866"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[23]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAgIHBhbmRlcigpXG5gYGAifQ== -->
-<pre class="r"><code>    pander()</code></pre>
-<!-- rnb-source-end -->
+<table style="width:86%;">
+<colgroup>
+<col width="69%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">file</th>
+<th align="right">records</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">./Year1/External/factiss/factiss_drug_1114_1165</td>
+<td align="right">276,046</td>
+</tr>
+<tr class="even">
+<td align="left">./Year1/External/factiss/factiss_groc_1114_1165</td>
+<td align="right">1,861,943</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year2/External/factiss/factiss_drug_1166_1217</td>
+<td align="right">262,577</td>
+</tr>
+<tr class="even">
+<td align="left">./Year2/External/factiss/factiss_groc_1166_1217</td>
+<td align="right">1,816,241</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year3/External/factiss/factiss_drug_1218_1269</td>
+<td align="right">260,883</td>
+</tr>
+<tr class="even">
+<td align="left">./Year3/External/factiss/factiss_groc_1218_1269</td>
+<td align="right">1,919,860</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year4/External/factiss/factiss_drug_1270_1321</td>
+<td align="right">267,729</td>
+</tr>
+<tr class="even">
+<td align="left">./Year4/External/factiss/factiss_groc_1270_1321</td>
+<td align="right">1,871,891</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year5/External/factiss/factiss_drug_1322_1373</td>
+<td align="right">313,035</td>
+</tr>
+<tr class="even">
+<td align="left">./Year5/External/factiss/factiss_groc_1322_1373</td>
+<td align="right">1,941,955</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year6/External/factiss/factiss_drug_1374_1426</td>
+<td align="right">326,100</td>
+</tr>
+<tr class="even">
+<td align="left">./Year6/External/factiss/factiss_groc_1374_1426</td>
+<td align="right">1,959,222</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year7/External/factiss/factiss_drug_1427_1478</td>
+<td align="right">353,290</td>
+</tr>
+<tr class="even">
+<td align="left">./Year7/External/factiss/factiss_groc_1427_1478</td>
+<td align="right">1,853,608</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year8/factiss/factiss_drug_1479_1530</td>
+<td align="right">395,891</td>
+</tr>
+<tr class="even">
+<td align="left">./Year8/factiss/factiss_groc_1479_1530</td>
+<td align="right">1,888,008</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year9/factiss/factiss_drug_1531_1582</td>
+<td align="right">371,024</td>
+</tr>
+<tr class="even">
+<td align="left">./Year9/factiss/factiss_groc_1531_1582</td>
+<td align="right">1,823,431</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year10/factiss/factiss_drug_1583_1634</td>
+<td align="right">356,381</td>
+</tr>
+<tr class="even">
+<td align="left">./Year10/factiss/factiss_groc_1583_1634</td>
+<td align="right">1,702,116</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year11/factiss/factiss_drug_1635_1686</td>
+<td align="right">359,005</td>
+</tr>
+<tr class="even">
+<td align="left">./Year11/factiss/factiss_groc_1635_1686</td>
+<td align="right">1,666,630</td>
+</tr>
+<tr class="odd">
+<td align="left">total</td>
+<td align="right">23,846,866</td>
+</tr>
+</tbody>
+</table>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -361,7 +460,7 @@ if (!file.exists(paste0(data_dir, &quot;carbbev_wc.RDS&quot;))) {
 <p>We note the size difference. However, there are different sub-categories within the carbonated beverage category.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FyYmJldl93YyA8LSByZWFkUkRTKHBhc3RlMChkYXRhX2RpciwgXCJjYXJiYmV2X3djLlJEU1wiKSlcbmNhcmJiZXZfd2Vla2x5X2ZpbGVzIDwtIFxuICAgIGNhcmJiZXZfd2MgJT4lXG4gICAgc3RyaW5ncjo6c3RyX3RyaW0oc2lkZSA9IFwibGVmdFwiKSAlPiVcbiAgICBzdHJpbmdyOjpzdHJfc3BsaXRfZml4ZWQoXCIgXCIsIG4gPSAyKSAlPiVcbiAgICB0aWJibGU6OmFzX3RpYmJsZSgpICU+JVxuICAgIHJlbmFtZShyZWNvcmRzID0gVjEsIGZpbGUgPSBWMikgJT4lXG4gICAgZHBseXI6Om11dGF0ZShyZWNvcmRzID0gYXMuaW50ZWdlcihyZWNvcmRzKSkgJT4lXG4gICAgZHBseXI6Om11dGF0ZShyZWNvcmRzX2NsZWFuID0gcHJldHR5TnVtKHJlY29yZHMsIGJpZy5tYXJrID0gXCIsXCIpKSAlPiVcbiAgICAjIFVzZSB0aGUgZmFjdCB0aGF0IHRoZSBsYXN0IGNvdXBsZXQgb2YgNCBkaWdpdHMgY3JlYXRlIHRoZSBwcm9wZXIgb3JkZXJpbmdcbiAgICBkcGx5cjo6YXJyYW5nZShhcy5pbnRlZ2VyKHN0cl9yZXBsYWNlKHN0cl9zdWIoZmlsZSwgLTksLTEpLCBcIl9cIixcIlwiKSkpICU+JVxuICAgIGRwbHlyOjpzZWxlY3QoZmlsZSwgcmVjb3JkcywgcmVjb3Jkc19jbGVhbilcbiAgICBcbmNhcmJiZXZfd2Vla2x5X2ZpbGVzICU+JSBcbiAgICBzZWxlY3QoZmlsZSwgcmVjb3Jkc19jbGVhbilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FyYmJldl93YyA8LSByZWFkUkRTKHBhc3RlMChkYXRhX2RpciwgXCJjYXJiYmV2X3djLlJEU1wiKSlcbmNhcmJiZXZfd2Vla2x5X2ZpbGVzIDwtIFxuICAgIGNhcmJiZXZfd2MgJT4lXG4gICAgc3RyaW5ncjo6c3RyX3RyaW0oc2lkZSA9IFwibGVmdFwiKSAlPiVcbiAgICBzdHJpbmdyOjpzdHJfc3BsaXRfZml4ZWQoXCIgXCIsIG4gPSAyKSAlPiVcbiAgICB0aWJibGU6OmFzX3RpYmJsZSgpICU+JVxuICAgIHJlbmFtZShyZWNvcmRzID0gVjEsIGZpbGUgPSBWMikgJT4lXG4gICAgZHBseXI6Om11dGF0ZShyZWNvcmRzID0gYXMuaW50ZWdlcihyZWNvcmRzKSkgJT4lXG4gICAgZHBseXI6Om11dGF0ZShyZWNvcmRzX2NsZWFuID0gcHJldHR5TnVtKHJlY29yZHMsIGJpZy5tYXJrID0gXCIsXCIpKSAlPiVcbiAgICAjIFVzZSB0aGUgZmFjdCB0aGF0IHRoZSBsYXN0IGNvdXBsZXQgb2YgNCBkaWdpdHMgY3JlYXRlIHRoZSBwcm9wZXIgb3JkZXJpbmdcbiAgICBkcGx5cjo6YXJyYW5nZShhcy5pbnRlZ2VyKHN0cl9yZXBsYWNlKHN0cl9zdWIoZmlsZSwgLTksLTEpLCBcIl9cIixcIlwiKSkpICU+JVxuICAgIGRwbHlyOjpzZWxlY3QoZmlsZSwgcmVjb3JkcywgcmVjb3Jkc19jbGVhbilcbiAgICBcbmNhcmJiZXZfd2Vla2x5X2ZpbGVzICU+JSBcbiAgICBzZWxlY3QoZmlsZSwgcmVjb3JkcyA9IHJlY29yZHNfY2xlYW4pICU+JVxuICAgIHBhbmRlcihqdXN0aWZ5ID0gYyhcImxlZnRcIixcInJpZ2h0XCIpKVxuYGBgIn0= -->
 <pre class="r"><code>carbbev_wc &lt;- readRDS(paste0(data_dir, &quot;carbbev_wc.RDS&quot;))
 carbbev_weekly_files &lt;- 
     carbbev_wc %&gt;%
@@ -376,18 +475,115 @@ carbbev_weekly_files &lt;-
     dplyr::select(file, records, records_clean)
     
 carbbev_weekly_files %&gt;% 
-    select(file, records_clean)</code></pre>
+    select(file, records = records_clean) %&gt;%
+    pander(justify = c(&quot;left&quot;,&quot;right&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6MjN9LCJyZGYiOiJINHNJQUFBQUFBQUFBNDJWelk2Yk1CU0Z5VytWVkdrcmRURnYwRzQ4aWEvL3ZXOWZvS3ZwQ2hIQ3BGRXBqSUMwcyt6cjlpVW1jd2ttb1lnSUluRnhMdDg1eDhZQ3ZuMTVZTXVIcGVkNVkyOHlHWG5qQ1E2bll5d2piK290eXZPejUwMCtuZ0hQKzRESG5idXdXVysrUjBFR202L1BSWlFsUWJ3SmcyeTdqWDdYWjMrWEhmYytBQWdzU2c2VzdiTTB2Q1ZqdldsSytjQkFENWE1dEU0WjcwdGpZTEFvTzFoV3BYWExSRythcGo1d0JvTmxMcTFUSnZ2U09HTllOQjhzcTlLNlphbzNUZU4yQzZZR3kxeGFwMHozcFFtbXNXZ3pXRmFsdFdTZktwbTVGYUt0RDVMVFB0cDVkOUwyaHJma2dNV3dQcnJ5YnRHZjNTTkliNWtiN29QaW9oZDM3dDA0M0hCWFhHSXhxaGV2M0Z2NHJFaUxJRzY5aWhaQXFGYkVYcDdmSlNqQ0pDWFU4Q3NDbWhMTnpBWFJoQUlsSE93VllVWVFxZGdGTVVSelJaU2xWNFNqVHJNbVloa2x5c0FWRVl3VG82OUJsbkRMaWIyOHkwcEVLRUtwYUNDYVcwSjVZN3BDYXNSa0k4aHdUZ0FhTG9yYWNqNE5GNllGc1JkZlJIQnpDQmpXUUF5VVhkWkFjQzZTMmdhaUFHK0RoaWJDME9XL0lJSHhvblo1eXhqRG15ZHhCYXIxL1ppRmNaRG5ic1BxNW5JWEZNSDZNUXQrUlcwOHdWNk5qMTF6K25pSUl6ZGVaVkdZWnJ2Y0QrTW9TRnJxUlpiK1dkY09xOUxoTDViVDZmUVBUeTh0K0UzNlZCelNCTkZ4K1gyYnQrWTR5bHFOOThla3RON2RoeitPeWM5NzJibzhEZkpER2JzODk2cmZ5bzN2R3VOeE5ZM0p5ZW5uVGorUGt2MGhxWmM1aTROdEZOY3p6YUw4R0JlNSsvc09WM2xlNVBvcE95UkZmVSt4bTYrcng4TjF3alN1TytmbGV5K3ZjY1V3MC9BSEFBQT0ifQ== -->
-<div data-pagedtable>
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["file"],"name":[1],"type":["chr"],"align":["left"]},{"label":["records_clean"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"./Year1/External/carbbev/carbbev_drug_1114_1165","2":"1,076,917"},{"1":"./Year1/External/carbbev/carbbev_groc_1114_1165","2":"16,250,083"},{"1":"./Year2/External/carbbev/carbbev_drug_1166_1217","2":"1,170,728"},{"1":"./Year2/External/carbbev/carbbev_groc_1166_1217","2":"17,010,319"},{"1":"./Year3/External/carbbev/carbbev_drug_1218_1269","2":"1,284,562"},{"1":"./Year3/External/carbbev/carbbev_groc_1218_1269","2":"18,736,690"},{"1":"./Year4/External/carbbev/carbbev_drug_1270_1321","2":"1,317,722"},{"1":"./Year4/External/carbbev/carbbev_groc_1270_1321","2":"18,920,681"},{"1":"./Year5/External/carbbev/carbbev_drug_1322_1373","2":"1,423,878"},{"1":"./Year5/External/carbbev/carbbev_groc_1322_1373","2":"19,393,965"},{"1":"./Year6/External/carbbev/carbbev_drug_1374_1426","2":"1,446,004"},{"1":"./Year6/External/carbbev/carbbev_groc_1374_1426","2":"19,739,033"},{"1":"./Year7/External/carbbev/carbbev_drug_1427_1478","2":"1,457,445"},{"1":"./Year7/External/carbbev/carbbev_groc_1427_1478","2":"18,833,115"},{"1":"./Year8/carbbev/carbbev_drug_1479_1530","2":"1,609,317"},{"1":"./Year8/carbbev/carbbev_groc_1479_1530","2":"19,274,904"},{"1":"./Year9/carbbev/carbbev_drug_1531_1582","2":"1,583,182"},{"1":"./Year9/carbbev/carbbev_groc_1531_1582","2":"19,811,582"},{"1":"./Year10/carbbev/carbbev_drug_1583_1634","2":"1,546,509"},{"1":"./Year10/carbbev/carbbev_groc_1583_1634","2":"19,614,571"},{"1":"./Year11/carbbev/carbbev_drug_1635_1686","2":"1,542,187"},{"1":"./Year11/carbbev/carbbev_groc_1635_1686","2":"19,241,642"},{"1":"total","2":"222,285,036"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[23]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICAgIHBhbmRlcigpXG5gYGAifQ== -->
-<pre class="r"><code>    pander()</code></pre>
-<!-- rnb-source-end -->
+<table style="width:88%;">
+<colgroup>
+<col width="69%"></col>
+<col width="18%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">file</th>
+<th align="right">records</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">./Year1/External/carbbev/carbbev_drug_1114_1165</td>
+<td align="right">1,076,917</td>
+</tr>
+<tr class="even">
+<td align="left">./Year1/External/carbbev/carbbev_groc_1114_1165</td>
+<td align="right">16,250,083</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year2/External/carbbev/carbbev_drug_1166_1217</td>
+<td align="right">1,170,728</td>
+</tr>
+<tr class="even">
+<td align="left">./Year2/External/carbbev/carbbev_groc_1166_1217</td>
+<td align="right">17,010,319</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year3/External/carbbev/carbbev_drug_1218_1269</td>
+<td align="right">1,284,562</td>
+</tr>
+<tr class="even">
+<td align="left">./Year3/External/carbbev/carbbev_groc_1218_1269</td>
+<td align="right">18,736,690</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year4/External/carbbev/carbbev_drug_1270_1321</td>
+<td align="right">1,317,722</td>
+</tr>
+<tr class="even">
+<td align="left">./Year4/External/carbbev/carbbev_groc_1270_1321</td>
+<td align="right">18,920,681</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year5/External/carbbev/carbbev_drug_1322_1373</td>
+<td align="right">1,423,878</td>
+</tr>
+<tr class="even">
+<td align="left">./Year5/External/carbbev/carbbev_groc_1322_1373</td>
+<td align="right">19,393,965</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year6/External/carbbev/carbbev_drug_1374_1426</td>
+<td align="right">1,446,004</td>
+</tr>
+<tr class="even">
+<td align="left">./Year6/External/carbbev/carbbev_groc_1374_1426</td>
+<td align="right">19,739,033</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year7/External/carbbev/carbbev_drug_1427_1478</td>
+<td align="right">1,457,445</td>
+</tr>
+<tr class="even">
+<td align="left">./Year7/External/carbbev/carbbev_groc_1427_1478</td>
+<td align="right">18,833,115</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year8/carbbev/carbbev_drug_1479_1530</td>
+<td align="right">1,609,317</td>
+</tr>
+<tr class="even">
+<td align="left">./Year8/carbbev/carbbev_groc_1479_1530</td>
+<td align="right">19,274,904</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year9/carbbev/carbbev_drug_1531_1582</td>
+<td align="right">1,583,182</td>
+</tr>
+<tr class="even">
+<td align="left">./Year9/carbbev/carbbev_groc_1531_1582</td>
+<td align="right">19,811,582</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year10/carbbev/carbbev_drug_1583_1634</td>
+<td align="right">1,546,509</td>
+</tr>
+<tr class="even">
+<td align="left">./Year10/carbbev/carbbev_groc_1583_1634</td>
+<td align="right">19,614,571</td>
+</tr>
+<tr class="odd">
+<td align="left">./Year11/carbbev/carbbev_drug_1635_1686</td>
+<td align="right">1,542,187</td>
+</tr>
+<tr class="even">
+<td align="left">./Year11/carbbev/carbbev_groc_1635_1686</td>
+<td align="right">19,241,642</td>
+</tr>
+<tr class="odd">
+<td align="left">total</td>
+<td align="right">222,285,036</td>
+</tr>
+</tbody>
+</table>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -429,20 +625,20 @@ tissue_upc &lt;-
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Below is a table of the first 100 records.</p>
+<p>Below is a table of the first 20 records.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX3VwYyAlPiUgXG4gICAgc2VsZWN0KHBhcmVudF9jb21wYW55LCB2ZW5kb3IsIGJyYW5kKSAlPiVcbiAgICBkaXN0aW5jdCgpICU+JVxuICAgIGFycmFuZ2UocGFyZW50X2NvbXBhbnksIHZlbmRvciwgYnJhbmQpICU+JVxuICAgIGhlYWQoMTAwKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX3VwYyAlPiUgXG4gICAgc2VsZWN0KHBhcmVudF9jb21wYW55LCB2ZW5kb3IsIGJyYW5kKSAlPiVcbiAgICBkaXN0aW5jdCgpICU+JVxuICAgIGFycmFuZ2UocGFyZW50X2NvbXBhbnksIHZlbmRvciwgYnJhbmQpICU+JVxuICAgIGhlYWQoMjApXG5gYGAifQ== -->
 <pre class="r"><code>tissue_upc %&gt;% 
     select(parent_company, vendor, brand) %&gt;%
     distinct() %&gt;%
     arrange(parent_company, vendor, brand) %&gt;%
-    head(100)</code></pre>
+    head(20)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MywibnJvdyI6MTAwfSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxWjNWUGJSaEIzY0J5SXdRWUNORXltVGUrcDB6N2doMHhuK253Nm5hVkRKNTF5SjlrNEx4MEhhSnNwTVF3aC9YanJIOUsvTlhSUDF1b0xjRW5hektSVG1ER1NkdS8yOW50L3NyVjc4S3g3MEcyMVdrdXRkdnRlYTZrTnQvZVg0Tis5MXYzV1EzdjlyZFZxYjhHTjVXekE1eWhuUEtMa0srS1JoQjhrUW5KRFJNUnl6aHBsdmxJa0VjYWtQS2Q5UnFVVTNDVmpiaElTMDVocndwU09jKzZYTk9SYU1CcUJsSVRyaUNaQ1JWVENrNXVhUkl0ODJYYXhiQzY3S3VKRGVldlV4RHdpc1ZadTFZWU9xTURVZFE5YjJVTmQwYjluYmRORTBnallGZU1ILzVEM3BPU3h3TXRNU0ZsaWlFeGNqSkV6NEFPd1dsTlhSRjdWN0EySEdrNitKWjVXYVZ6WnNlcEFMSzJMcEVSWGJEcXczZmgwYkEyVEZSK3RNMm9ZZFNIMnRWQy9IM21uUVo1cmRCdm1KdU5TcHRlRTlQMFpQZWFMaURJRnVWbmF2Y01rcDNwTUlaaFhNL1l4VTVGSklhMklGSXhIcHVIZVByQkhYQ2VXWERyc0NkUENLSWRpcUpRaGhoSVhWQmtWS3lEZlZaaWZWMFFVUkdEUU4xd3VFMG9nSmxFdFlXK2liODNwTmdVNFNlRzQwc0JINEZqaFJTUy9WQTVaZHdYeGhOTHdxZFhLOWVRMVYwVVJEZWxCdFFlNG1ndzFOMzZGdHVPbW11NEZra085ZlEycWZGTTk4aEdFUmxDaFNWNnJwQ2k0VFI3QllSeGNaZHNNcENwdTZmT1JWbFp2dDVyekQ0ZUNTNWU0ZElMTlphaFNUVXhDZGFPNzVHV1JMOXV0TFlzczI4MkNtdk9YUFI1WnpUQUJQQW1SbExYRXJOcnFENGpId1ZVUVhPZ3dWSXNLcys5RE53eXBEb0NuWFlONitwNEo0YnlJOFJoaVBsWWF6SERvQzBwMU5hRGJ2aG9PUTJwc1dqWlBYY2dUUGxqbWN0RFpWeUVua0NnZUZ1R3UwQ09icWtWbFpNbkx0Zm1YK0gwQkJqMER1cExWN3JSUHhtUnN3NmRzYlZVNE8vc2NtblVzdU5aV21nazVkRGx6RytiYVBoUVE5dk1GdEsxQWhBN1hja0tZekFKUnB2TWQ2Ly9BMmcxc3dyNmdRUUV5ZUwzUFdyNXh0SENoaE8zZ0srbkdrRFFUWlNyTmRDdFF6Ry9JK3MrdzFnSWx3Y293VmpveEMyajlRS2RlTmdqRG1FYllZUHVTc0lwYzNDK3picHM3OWVOaHg2ZUxzZU1kZEx5RGpsZVlIOE9sZHhpeWppRzN4NzVJQUdZb1NKYWhVbTdOdEFxdmloay9hUno1ZERHTy9GUmc1TlBGTUJKRHlqUUgvVWNGV0N1QjhBTFdIWWE4dzVCM3JJK0dJYmV6VWhkMEw2Wk1ER0hLVklISWY0UjNXeWk1WlpoS0VNNUpFY0k4d01wOWZ6eTU2bGhvT0o5YkM0RGs4bjdxQU43RXh6NHNoMVpIaHBSeDhodzNka1BxZ1VsR0RaT2NzZ0tVU01GVXdXZjdmaTNMcnRqSmNPQjFnRzg1VXBsU3QrQjFnemtDU0JSS2VoRHpoRXBVYTlVSUdVeElvbExtb3g0MGRBU0ZQbzhpWUpZUXlVZTgyTlE0WXpsSGFJWFh0UEI4OEZzNkthSlN3RjI0TWd0MUpLN3VNQnFYMzhUQ0ZFc2dwcGs2eEprUWlHSnlDOTc5eXYwSFdMeG1vMElpa3NFSGpLSkRXUUNyaUxFQmwwV01JczVmbE5OajNZeHBGQWhPL094aWFpY1dJWWtwWkp4Q0JWZXpHV2U0NUF4SkhabXlZSExkUTY4R2hFcEVJNkZwRUFOVE9sbEE2MUxmOTRuVkgxVlpRZHh6UXlSemxJT3I3YmR5TG8xdzl3TkpVODNSRjFlUVRGTlk0N0dPVURxYWU4Vzd5SEtPUXZCY1JDQzNFbnhERE5vQUtuQkRTUGVoa3JIUUhtZzFvVVVDcm1RZG85eTNra0VCTlJ4aXVBQTUwcEJRS1J6VXIrZklOQ1FBMUFBd2xubFZtZjNYS3pwUE0wTTFIUlZPWE03d0pqL0lINy9JSHduc0luaWZLV1R6RmNGSnVTZ1JaQ1IwNGNlMWdwTW1HTFFOcERrcVRjVHo4dTJuRUU5TldwcXhVWjRxWFFDQXZLa1owa2txQWFIYWQvYWgwazNOQ3BYOXE5c1RxRXpJTTA3NFFReXBhRVJScUgxYzVBcW9NMHlyeDNVcVlDVm8xYkN2R0tRNXV4UjN4UmJRa0FTaWFPSzdTSmNpeVZwS0ZwR3lxb3Q5Tm1BVmwyMGl2Ym1oaDR6TUp6bng4eHF4SGxFTTJHWUVuVnRhckNodE95aGQwVWlkQi9QUmppbktvNUdvK0czTjAvYWxCYXlFTE1jMU1ieXI4YVFZakYxd3pwQnJYdmIxalpKUzAzc0ZyQ1pCSkZCU0wrK084LzZMSGRmTzNodEd6dnd0ekZibHdzbmJpMjB6bWVRWjBmaDlzSE40TW4zekpwL0hTT3dlVFMrbWd4L09wNitQbTh0blFNUGxiVHoyYkhwK1BMdjQvdkQwOWRsMDlqdTY4cGZqMmRIcE9XNThlVDZkSFRXa1BUdy8vWFdBRW52d1dmb0QvbDFlWHY0SmwzZU54Y3VuWnhldlRtZXdkTW4rbnRscDZIenZ2RUZZZnp1em9vLzJEbjk2Ty90NTd6dHJWOGFlLy9YeSs2UEtmWHQrWlBzeUY5VkJVNDVuUDc2YUhhTXBKOU9YeHlkb081aVFXVEE0TzM4MXUwQUhBdlhONE9MMFlvcnJ1b2VuSjBqSmJHdTkrd3VXc3VMWnZSMEFBQT09In0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MywibnJvdyI6MjB9LCJyZGYiOiJINHNJQUFBQUFBQUFBKzFWVFcvVFFCQjE0b1pRaDlKQ0l3NGNZRS9jNmdOQzRyeTJ0ODZTemE3eHJtbDdRbTVpSUNLMUk4Zmw0OFlQNWpjMGpCMXZNRlpWRUFpSkE1Rmk3OHliR2M5N003SkQ3L1NwZFdvWmh0RTFUTE5qZEUwNDduVGgwakYyak4zeS9za3d6RU00bE1nQi9JYzFjQitqSjhoSGlwd3F5b2hFbExzMWNnZTdJeUdRb2xKR3BQWTl3SXhSNHFFVEloVUtjRUJDNUlvd3FOSEhlRUpDNm1JT1ZSUUpPVlpVY016QThpS3BRbHFIRGJkaG05ck5FcitMN1dNWkVJNkNVSGhORGoxb3dSWFhHWWVWOFdPalA0ZUdXREhNQVc2UXQvOFFlL2dkYzhkK1JTRnlsVVJNZVhwR2prMXNZQjFpajNLL1NmdkF3WktnWjhnUFJSUTBNZ1lPekxLVWlERXR4VDBIMHVVSW41VEVXS1hSMzl1RVJ6ZHZ3djlGK0pjWFllQ1VNNFVvN3NrYk5xRC9JbkpnVWJSNUY4SkRndEV4ZGdsNnFST3RDZmFCa0JUSHF2YmNCZzhYakdKdFMxQ1hBWjN0Y01vQlhqZXBQaGRWVTcrQVdXUENKZFJVUWxlNkZSQ0ZtVzVySUNrYm55RWxJbmVrKzhBVGgyTHVhajZXendSaTVCWFpKcldlMGErbDNhb1dVbjhFdWtWbnN2WHk3VTBYOFdwVnE2eWQxaXd1WXZ0TkhsOGs3ZkFVZkRyYzFQSXU0enhKaTlmVDdHSVpwNTgxcXc5Sk9zdHluWGlleCttc1ZXMDN6ejdhdXVKZStZbjRBcGYxZXYwVmJsZXQ0SDYyTE9aWkNxSGQ4bVBSYS9YY3lWdU8vY3UwTEQwN21yNjdUTjhmUFM5NVZmRG10MWVmaDQyenVYbWt1YTVMOVRTVkpIMDdUeE5OWlJHZkp3dk5IU2hVRE94bFBrOExMU0I0VjNhUkZiR09zNmJaUW5zcWJzYlZOMW9TWWNZYUJ3QUEifQ== -->
 <div data-pagedtable>
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["parent_company"],"name":[1],"type":["chr"],"align":["left"]},{"label":["vendor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["brand"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"A & G TEXTILES INC","2":"A & G TEXTILES INC","3":"BEST BRANDS"},{"1":"ACHOO TISSUE","2":"ACHOO TISSUE","3":"ACHOO TISSUE"},{"1":"ALLIED WEST PAPER CORP","2":"ALLIED WEST PAPER CORP","3":"JUBILEE"},{"1":"AMERICAN INTERNATIONAL INDUSTRI","2":"AMERICAN INTERNATIONAL INDUSTR","3":"ANDREA FACE QS"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"MAGIC SOFT"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"MAGNOLIA"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"STERLING"},{"1":"ASPEN PRODS INC","2":"ASPEN PRODS INC","3":"ASPEN"},{"1":"ATICO","2":"ATICO","3":"ATICO"},{"1":"ATICO","2":"ATICO","3":"NOBRAND"},{"1":"ATICO INTERNATIONAL","2":"ATICO INTERNATIONAL","3":"ATICO"},{"1":"ATICO INTERNATIONAL","2":"ATICO INTERNATIONAL","3":"NOBRAND"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"KENSINGTON"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"PETALS"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"SILKY TOUCH"},{"1":"ATLANTIC PCKG PRODUCTS LTD","2":"ATLANTIC PCKG PRODUCTS LTD","3":"AMBIANCE"},{"1":"B.E.N TRADING CORP","2":"B.E.N TRADING CORP","3":"GLO LEVELS"},{"1":"BASE 4 GROUP LTD","2":"BASE 4 GROUP LTD","3":"NOBRAND"},{"1":"BLESSUE LLC","2":"BLESSUE LLC","3":"BLESSUE"},{"1":"BRADSHAW INTL INC","2":"BRADSHAW INTL INC","3":"BRIGHT BUYS"},{"1":"CASCADES TISSUE","2":"CASCADES TISSUE","3":"AMERICAN MERCANTILE"},{"1":"CASCADES TISSUE","2":"CASCADES TISSUE","3":"CAPRI"},{"1":"CASCADES TISSUE","2":"CASCADES TISSUE","3":"GENTLE TOUCH BY PERT"},{"1":"CASCADES TISSUE GROUP","2":"CASCADES TISSUE GROUP","3":"GENTLE TOUCH BY PERT"},{"1":"CASCADES TISSUE GROUP","2":"CASCADES TISSUE GROUP","3":"PERT"},{"1":"CELLU TISSUE CORP","2":"ATLANTIC PAPER CORP.","3":"KENSINGTON"},{"1":"CELLU TISSUE CORP","2":"ATLANTIC PAPER CORP.","3":"PETALS"},{"1":"CELLU TISSUE CORP","2":"ATLANTIC PAPER CORP.","3":"SILKY TOUCH"},{"1":"CHINACOST LLC","2":"CHINACOST LLC","3":"SOFT N WHITE"},{"1":"CLEARWATER PAPER CORP","2":"CLEARWATER PAPER CORP","3":"BACK TO SCHOOL"},{"1":"CONSUMER LICENSING CORP","2":"CONSUMER LICENSING CORP","3":"SNEEZERS"},{"1":"CONVERTING INC","2":"CONVERTING INC","3":"SWANKIE HANKIES"},{"1":"CRISOBA PRODUCTOS SA DE CV","2":"CRISOBA PRODUCTOS SA DE CV","3":"PETALO"},{"1":"CUSTOM PAPER PRODUCTS INC.","2":"CUSTOM PAPER PRODUCTS INC.","3":"PATRIOT"},{"1":"DELTA BRANDS INC","2":"DELTA BRANDS INC","3":"HOME SELECT"},{"1":"DELTA BRANDS INC","2":"DELTA BRANDS INC","3":"LUCKY"},{"1":"DELTA TRADE USA LLC","2":"DELTA TRADE USA LLC","3":"LUCKY"},{"1":"DESIGN DESIGN INC.","2":"DESIGN DESIGN INC.","3":"DESIGN DESIGN"},{"1":"DI GIORGIO CORP","2":"WHITE ROSE FOOD CORP","3":"DOLLAR SMART"},{"1":"DI GIORGIO CORP","2":"WHITE ROSE INC","3":"DOLLAR SMART"},{"1":"DONNAMAX INC","2":"DONNAMAX INC","3":"AHHH CHOOO"},{"1":"DR FRESH INC","2":"DR FRESH INC","3":"DR FRESH"},{"1":"DURA-KLEEN (USA) INC.","2":"DURA-KLEEN (USA) INC.","3":"NOBRAND"},{"1":"ELLIAIR AMERICA CO","2":"ELLIAIR AMERICA CO","3":"ELLIAIR"},{"1":"ENCORE SALES LTD.","2":"ENCORE SALES LTD.","3":"GIORDANO"},{"1":"EVRON INDS LTD","2":"EVRON INDS LTD","3":"LAUREL"},{"1":"FIELD DAY","2":"FIELD DAY","3":"FIELD DAY"},{"1":"FOUR STAR INTERNATIONAL TRADING","2":"FOUR STAR INTERNATIONAL TRADIN","3":"NOBRAND"},{"1":"FOUR STAR INTNL TRDNG CO","2":"FOUR STAR INTNL TRDNG CO","3":"NOBRAND"},{"1":"GENERIC","2":"GENERIC","3":"GENERIC"},{"1":"GLOBAL TISSUE GROUP INC","2":"GLOBAL TISSUE GROUP INC","3":"REGAL"},{"1":"H. GEORGE CASPARI INC","2":"H. GEORGE CASPARI INC","3":"CASPARI"},{"1":"HALLMARK CARDS","2":"HALLMARK CARDS","3":"HALLMARK"},{"1":"HGSM CONCEPTS WORLD BAZAARS INC","2":"HGSM CONCEPTS WORLD BAZAARS IN","3":"NOBRAND"},{"1":"HOFFMASTER GROUP INC","2":"CREATIVE CONVERTING","3":"NOBRAND"},{"1":"HOFFMASTER GROUP INC","2":"CREATIVE CONVERTING","3":"SWANKIE HANKIES"},{"1":"IHR IDEAL HOME RANGE","2":"IHR IDEAL HOME RANGE","3":"IHR"},{"1":"IRVING TISSUE CONVERTERS","2":"IRVING TISSUE CONVERTERS","3":"MAJESTA"},{"1":"IRVING TISSUE CONVERTERS","2":"IRVING TISSUE CONVERTERS","3":"ROYALE"},{"1":"IRVING TISSUE CONVERTERS","2":"IRVING TISSUE CONVERTERS","3":"SCOTTIES"},{"1":"ITS 2 COOL LTD","2":"ITS 2 COOL LTD","3":"COOL OFF"},{"1":"J W WINDSOR CO LTD","2":"J W WINDSOR CO LTD","3":"MAXAM ALIBI"},{"1":"JEAN PIERRE COSMETICS","2":"JEAN PIERRE COSMETICS","3":"BLUM NATURALS"},{"1":"JEAN PIERRE COSMETICS","2":"JEAN PIERRE COSMETICS","3":"JEAN PIERRE"},{"1":"JUSTEN PRODS","2":"JUSTEN PRODS","3":"NOBRAND"},{"1":"JUSTEN PRODS","2":"JUSTEN PRODS","3":"SOFT SARAVEL"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX AND KLEENEX COOL TOUC"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX ANTI VIRAL"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX AUTO"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX BOUTIQUE"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX CASUALS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX COLDCARE"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX COLDCARE ULTRA COMFOR"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX COOL TOUCH"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX COTTONELLE EXPRESSION"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX DISNEY"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX DISNEY PRINCESS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX EXPRESSIONS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX FOR KIDS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX LITTLE TRAVELERS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX SOFTIQUE"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX TRAVELERS"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX ULTRA"},{"1":"KIMBERLY CLARK CORP","2":"KIMBERLY CLARK CORP","3":"KLEENEX ULTRA AND KLEENEX CL"},{"1":"KING ZAK INDUSTRIES INC.","2":"KING ZAK INDUSTRIES INC.","3":"NICOLE COLLECTION"},{"1":"KINGSBRIDGE INTL","2":"KINGSBRIDGE INTL","3":"NOBRAND"},{"1":"KISS U CORPS LLC","2":"KISS U CORPS LLC","3":"KISS U"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"ENVISION"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"GREEN FOREST"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"POM ETTS"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"PREFERENCE"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"PREFERENCE ULTRA"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"SOF KNIT"},{"1":"KOCH INDUSTRIES INC","2":"GEORGIA-PACIFIC CORP","3":"SOFT N GENTLE"},{"1":"KOLE IMPORTS","2":"KOLE IMPORTS","3":"KOLE"},{"1":"KOLE IMPORTS","2":"KOLE IMPORTS","3":"NOBRAND"},{"1":"KRUGER COMPANY","2":"SCOTT PAPER LIMITED","3":"WHITE SWAN"},{"1":"L C INDUSTRIES","2":"L C INDUSTRIES","3":"L C INDUSTRIES"},{"1":"LINTERS INC.","2":"LINTERS INC.","3":"PURELY COTTON"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[100]},"pages":{}}}
+{"columns":[{"label":["parent_company"],"name":[1],"type":["chr"],"align":["left"]},{"label":["vendor"],"name":[2],"type":["chr"],"align":["left"]},{"label":["brand"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"A & G TEXTILES INC","2":"A & G TEXTILES INC","3":"BEST BRANDS"},{"1":"ACHOO TISSUE","2":"ACHOO TISSUE","3":"ACHOO TISSUE"},{"1":"ALLIED WEST PAPER CORP","2":"ALLIED WEST PAPER CORP","3":"JUBILEE"},{"1":"AMERICAN INTERNATIONAL INDUSTRI","2":"AMERICAN INTERNATIONAL INDUSTR","3":"ANDREA FACE QS"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"MAGIC SOFT"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"MAGNOLIA"},{"1":"AMERICAN TISSUE CORP","2":"AMERICAN TISSUE CORP","3":"STERLING"},{"1":"ASPEN PRODS INC","2":"ASPEN PRODS INC","3":"ASPEN"},{"1":"ATICO","2":"ATICO","3":"ATICO"},{"1":"ATICO","2":"ATICO","3":"NOBRAND"},{"1":"ATICO INTERNATIONAL","2":"ATICO INTERNATIONAL","3":"ATICO"},{"1":"ATICO INTERNATIONAL","2":"ATICO INTERNATIONAL","3":"NOBRAND"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"KENSINGTON"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"PETALS"},{"1":"ATLANTIC PAPER CORP.","2":"ATLANTIC PAPER CORP.","3":"SILKY TOUCH"},{"1":"ATLANTIC PCKG PRODUCTS LTD","2":"ATLANTIC PCKG PRODUCTS LTD","3":"AMBIANCE"},{"1":"B.E.N TRADING CORP","2":"B.E.N TRADING CORP","3":"GLO LEVELS"},{"1":"BASE 4 GROUP LTD","2":"BASE 4 GROUP LTD","3":"NOBRAND"},{"1":"BLESSUE LLC","2":"BLESSUE LLC","3":"BLESSUE"},{"1":"BRADSHAW INTL INC","2":"BRADSHAW INTL INC","3":"BRIGHT BUYS"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[20]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -485,54 +681,54 @@ carbbev_upc &lt;-
 <p>There are six <em>sub-categories</em>:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FyYmJldl91cGMgJT4lXG4gICAgZ3JvdXBfYnkoc21hbGxfY2F0ZWdvcnkpICU+JVxuICAgIHN1bW1hcmlzZShgVVBDJ3NgID0gbigpKSAlPiVcbiAgICBhcnJhbmdlKGBVUEMnc2ApICU+JVxuICAgIHBhbmRlcigpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FyYmJldl91cGMgJT4lXG4gICAgZ3JvdXBfYnkoc21hbGxfY2F0ZWdvcnkpICU+JVxuICAgIHN1bW1hcmlzZShgVVBDJ3NgID0gbigpKSAlPiVcbiAgICBhcnJhbmdlKGRlc2MoYFVQQydzYCkpICU+JVxuICAgIHBhbmRvYy50YWJsZShqdXN0aWZ5ID0gYyhcImxlZnRcIixcInJpZ2h0XCIpKVxuYGBgIn0= -->
 <pre class="r"><code>carbbev_upc %&gt;%
     group_by(small_category) %&gt;%
     summarise(`UPC's` = n()) %&gt;%
-    arrange(`UPC's`) %&gt;%
-    pander()</code></pre>
+    arrange(desc(`UPC's`)) %&gt;%
+    pandoc.table(justify = c(&quot;left&quot;,&quot;right&quot;))</code></pre>
 <!-- rnb-source-end -->
-<table style="width:51%;">
+<table style="width:56%;">
 <colgroup>
-<col width="41%"></col>
-<col width="9%"></col>
+<col width="44%"></col>
+<col width="11%"></col>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">small_category</th>
-<th align="center">UPC’s</th>
+<th align="left">small_category</th>
+<th align="right">UPC’s</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">SUGAR/CALORIE REDUCED SOFT DRINK</td>
-<td align="center">56</td>
+<td align="left">REGULAR SOFT DRINKS</td>
+<td align="right">25,840</td>
 </tr>
 <tr class="even">
-<td align="center">PLU - ALL BRANDS SODA</td>
-<td align="center">61</td>
+<td align="left">LOW CALORIE SOFT DRINKS</td>
+<td align="right">7,949</td>
 </tr>
 <tr class="odd">
-<td align="center">PLU SOFT DRINKS</td>
-<td align="center">926</td>
+<td align="left">SELTZER/TONIC WATER/CLUB SODA</td>
+<td align="right">2,490</td>
 </tr>
 <tr class="even">
-<td align="center">SELTZER/TONIC WATER/CLUB SODA</td>
-<td align="center">2490</td>
+<td align="left">PLU SOFT DRINKS</td>
+<td align="right">926</td>
 </tr>
 <tr class="odd">
-<td align="center">LOW CALORIE SOFT DRINKS</td>
-<td align="center">7949</td>
+<td align="left">PLU - ALL BRANDS SODA</td>
+<td align="right">61</td>
 </tr>
 <tr class="even">
-<td align="center">REGULAR SOFT DRINKS</td>
-<td align="center">25840</td>
+<td align="left">SUGAR/CALORIE REDUCED SOFT DRINK</td>
+<td align="right">56</td>
 </tr>
 </tbody>
 </table>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Even excluding the categories, there are 1,019 <em>company / vender / brand</em> combinations. Below are the first 100:</p>
+<p>Even excluding the categories, there are 1,019 <em>company / vender / brand</em> combinations. Below are the first 20:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2FyYmJldl91cGMgJT4lIFxuICAgIHNlbGVjdChwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lXG4gICAgZGlzdGluY3QoKSAlPiVcbiAgICBhcnJhbmdlKHBhcmVudF9jb21wYW55LCB2ZW5kb3IsIGJyYW5kKSAlPiVcbiAgICBoZWFkKDIwKVxuYGBgIn0= -->
@@ -555,18 +751,32 @@ carbbev_upc &lt;-
 </div>
 <div id="sales-information" class="section level1">
 <h1><span class="header-section-number">4</span> Sales Information</h1>
-<p>To load the sales information we can write a function that will load each file using <code>read_table</code> and then add the year information as the first column.</p>
+<p>To load the sales information we can write a function that will load each file using <code>read_fwf</code> (with the column widths found by reviewing the files). We do not use <code>read_table</code> as this can potentially be unreliable with large datasets (see <a href="https://github.com/tidyverse/readr/issues/518#issuecomment-268872538">Hadly’s comment</a>). We also add the year, store type, and ID (row number for reference) as preceding columns.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm5fbG9hZF93ZWVrbHlfZmlsZSA8LSBmdW5jdGlvbihmaWxlbmFtZSkge1xuICAgIHllYXJfbnVtIDwtIGFzLmludGVnZXIoc3RyX21hdGNoKGZpbGVuYW1lLCBcIlllYXIoWzpkaWdpdDpdKylcIilbLCAyXSlcbiAgICBkcnVnX29yX2dyb2MgPC0gc3RyX21hdGNoKGZpbGVuYW1lLCBcImRydWd8Z3JvY1wiKVssIDFdXG4gICAgY29sdW1uX3dpZHRocyA8LSBjKDcsIDUsIDMsIDMsIDYsIDYsIDYsIDksIDUsIDIsIDIpXG4gICAgY29sdW1uX25hbWVzIDwtIGMoJ0lSSV9LRVknLCdXRUVLJywnU1knLCdHRScsJ1ZFTkQnLCdJVEVNJywnVU5JVFMnLCdET0xMQVJTJywnRicsJ0QnLCdQUicpXG4gICAgXG4gICAgcmVhZF9md2YocGFzdGUwKHZvbHVtZV9kaXIsIHN0cl9yZXBsYWNlKGZpbGVuYW1lLCBcIi5cIiwgXCJcIikpLCBcbiAgICAgICAgICAgICBmd2Zfd2lkdGhzKGNvbHVtbl93aWR0aHMsIGNvbHVtbl9uYW1lcyksIHNraXAgPSAxLCBwcm9ncmVzcyA9IEZBTFNFKSAlPiVcbiAgICAgICAgbXV0YXRlKGlyaV95ZWFyID0geWVhcl9udW0sIGlkID0gcm93X251bWJlcigpLCBzdG9yZV90eXBlID0gZHJ1Z19vcl9ncm9jKSAlPiVcbiAgICAgICAgc2VsZWN0KGlyaV95ZWFyLCBpZCwgc3RvcmVfdHlwZSwgZXZlcnl0aGluZygpKVxufVxuZm5faW50ZWdyaXR5X2NoZWNrIDwtIGZ1bmN0aW9uKGR0KSB7XG4gICAgcmVjb3JkcyA8LSBkdCAlPiUgbnJvdygpXG4gICAgdW5pcXVlX3JlY29yZHMgPC0gXG4gICAgICAgIGR0ICU+JVxuICAgICAgICBzZWxlY3QoSVJJX0tFWSwgV0VFSywgU1ksIEdFLCBWRU5ELCBJVEVNKSAlPiVcbiAgICAgICAgZGlzdGluY3QoKSAlPiVcbiAgICAgICAgbnJvdygpXG4gICAgcmV0dXJuKGRhdGFfZnJhbWUocmVjb3Jkc19yYXcgPSByZWNvcmRzLCB1bmlxdWVfcmVjb3JkcyA9IHVuaXF1ZV9yZWNvcmRzKSlcbn1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm5fbG9hZF93ZWVrbHlfZmlsZSA8LSBmdW5jdGlvbihmaWxlbmFtZSkge1xuICAgIHllYXJfbnVtIDwtIGFzLmludGVnZXIoc3RyX21hdGNoKGZpbGVuYW1lLCBcIlllYXIoWzpkaWdpdDpdKylcIilbLCAyXSlcbiAgICBkcnVnX29yX2dyb2MgPC0gc3RyX21hdGNoKGZpbGVuYW1lLCBcImRydWd8Z3JvY1wiKVssIDFdXG4gICAgY29sdW1uX3dpZHRocyA8LSBjKDcsIDUsIDMsIDMsIDYsIDYsIDYsIDksIDUsIDIsIDIpXG4gICAgY29sdW1uX25hbWVzIDwtIGMoJ0lSSV9LRVknLCdXRUVLJywnU1knLCdHRScsJ1ZFTkQnLCdJVEVNJywnVU5JVFMnLCdET0xMQVJTJywnRicsJ0QnLCdQUicpXG4gICAgY29sdW1uX3R5cGVzIDwtIGNvbHMoXG4gICAgICAgICAgICAgICAgICAgICAgSVJJX0tFWSA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgICAgICAgICAgICAgICAgICAgICBXRUVLID0gY29sX2ludGVnZXIoKSxcbiAgICAgICAgICAgICAgICAgICAgICBTWSA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgICAgICAgICAgICAgICAgICAgICBHRSA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgICAgICAgICAgICAgICAgICAgICBWRU5EID0gY29sX2NoYXJhY3RlcigpLFxuICAgICAgICAgICAgICAgICAgICAgIElURU0gPSBjb2xfY2hhcmFjdGVyKCksXG4gICAgICAgICAgICAgICAgICAgICAgVU5JVFMgPSBjb2xfaW50ZWdlcigpLFxuICAgICAgICAgICAgICAgICAgICAgIERPTExBUlMgPSBjb2xfZG91YmxlKCksXG4gICAgICAgICAgICAgICAgICAgICAgYEZgID0gY29sX2NoYXJhY3RlcigpLFxuICAgICAgICAgICAgICAgICAgICAgIEQgPSBjb2xfaW50ZWdlcigpLFxuICAgICAgICAgICAgICAgICAgICAgIFBSID0gY29sX2ludGVnZXIoKVxuICAgICAgICAgICAgICAgICAgICApXG4gICAgXG4gICAgcmVhZF9md2YocGFzdGUwKHZvbHVtZV9kaXIsIHN0cl9yZXBsYWNlKGZpbGVuYW1lLCBcIi5cIiwgXCJcIikpLCBcbiAgICAgICAgICAgICBmd2Zfd2lkdGhzKGNvbHVtbl93aWR0aHMsIGNvbHVtbl9uYW1lcyksIGNvbF90eXBlcyA9IGNvbHVtbl90eXBlcyxcbiAgICAgICAgICAgICBza2lwID0gMSwgcHJvZ3Jlc3MgPSBGQUxTRSkgJT4lXG4gICAgICAgIG11dGF0ZShpcmlfeWVhciA9IHllYXJfbnVtLCBpZCA9IHJvd19udW1iZXIoKSwgc3RvcmVfdHlwZSA9IGRydWdfb3JfZ3JvYykgJT4lXG4gICAgICAgIHNlbGVjdChpcmlfeWVhciwgaWQsIHN0b3JlX3R5cGUsIGV2ZXJ5dGhpbmcoKSlcbn1cbmZuX2ludGVncml0eV9jaGVjayA8LSBmdW5jdGlvbihkdCkge1xuICAgIHJlY29yZHMgPC0gZHQgJT4lIG5yb3coKVxuICAgIHVuaXF1ZV9yZWNvcmRzIDwtIFxuICAgICAgICBkdCAlPiVcbiAgICAgICAgc2VsZWN0KElSSV9LRVksIFdFRUssIFNZLCBHRSwgVkVORCwgSVRFTSkgJT4lXG4gICAgICAgIGRpc3RpbmN0KCkgJT4lXG4gICAgICAgIG5yb3coKVxuICAgIHJldHVybihkYXRhX2ZyYW1lKHJlY29yZHNfcmF3ID0gcmVjb3JkcywgdW5pcXVlX3JlY29yZHMgPSB1bmlxdWVfcmVjb3JkcykpXG59XG5gYGAifQ== -->
 <pre class="r"><code>fn_load_weekly_file &lt;- function(filename) {
     year_num &lt;- as.integer(str_match(filename, &quot;Year([:digit:]+)&quot;)[, 2])
     drug_or_groc &lt;- str_match(filename, &quot;drug|groc&quot;)[, 1]
     column_widths &lt;- c(7, 5, 3, 3, 6, 6, 6, 9, 5, 2, 2)
     column_names &lt;- c('IRI_KEY','WEEK','SY','GE','VEND','ITEM','UNITS','DOLLARS','F','D','PR')
+    column_types &lt;- cols(
+                      IRI_KEY = col_character(),
+                      WEEK = col_integer(),
+                      SY = col_character(),
+                      GE = col_character(),
+                      VEND = col_character(),
+                      ITEM = col_character(),
+                      UNITS = col_integer(),
+                      DOLLARS = col_double(),
+                      `F` = col_character(),
+                      D = col_integer(),
+                      PR = col_integer()
+                    )
     
     read_fwf(paste0(volume_dir, str_replace(filename, &quot;.&quot;, &quot;&quot;)), 
-             fwf_widths(column_widths, column_names), skip = 1, progress = FALSE) %&gt;%
+             fwf_widths(column_widths, column_names), col_types = column_types,
+             skip = 1, progress = FALSE) %&gt;%
         mutate(iri_year = year_num, id = row_number(), store_type = drug_or_groc) %&gt;%
         select(iri_year, id, store_type, everything())
 }
@@ -584,10 +794,10 @@ fn_integrity_check &lt;- function(dt) {
 <!-- rnb-text-begin -->
 <div id="tissue-category-2" class="section level2">
 <h2><span class="header-section-number">4.1</span> Tissue Category</h2>
-<p>We load each of the store datasets and perform data integrity checks. We show that the number of records load is one less than we found with the <code>wc -l</code> shell command (due to the header) and that the number of records unique on store / week / upc (<code>SY</code>, <code>GE</code>, <code>VEND</code>, <code>ITEM</code>) is the total number of records loaded.</p>
+<p>We load each of the store datasets and perform data integrity checks. We show that the number of records loaded is one less than we found with the <code>wc -l</code> shell command (due to the header) and that the number of records unique on store / week / upc (<code>SY</code>, <code>GE</code>, <code>VEND</code>, <code>ITEM</code>) is the total number of records loaded.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX2ZpbGVzIDwtIHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZVstbGVuZ3RoKHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZSldXG50aXNzdWVfZmlsZXNfbGlzdCA8LSBsYXBwbHkodGlzc3VlX2ZpbGVzLCBmbl9sb2FkX3dlZWtseV9maWxlKVxudGlzc3VlX3dlZWtseSA8LSBiaW5kX3Jvd3ModGlzc3VlX2ZpbGVzX2xpc3QpXG5sYXBwbHkodGlzc3VlX2ZpbGVzX2xpc3QsIGZuX2ludGVncml0eV9jaGVjaykgJT4lXG4gICAgYmluZF9yb3dzKCkgJT4lXG4gICAgYmluZF9yb3dzKGRhdGFfZnJhbWUocmVjb3Jkc19yYXcgPSBzdW0oLiRyZWNvcmRzX3JhdyksIHVuaXF1ZV9yZWNvcmRzID0gc3VtKC4kdW5pcXVlX3JlY29yZHMpKSkgJT4lXG4gICAgYmluZF9jb2xzKHRpc3N1ZV93ZWVrbHlfZmlsZXMpICU+JVxuICAgIG11dGF0ZShcbiAgICAgICAgIG4gPSBuKClcbiAgICAgICAgICwgYFBhc3M/YCA9IGlmX2Vsc2UoZmlsZSA9PSBcInRvdGFsXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmX2Vsc2UocmVjb3Jkc19yYXcgPT0gKHJlY29yZHMgLSBuICsgMSkgJiB1bmlxdWVfcmVjb3JkcyA9PSByZWNvcmRzX3JhdywgXCJZZXNcIixcIk5vXCIpLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZl9lbHNlKHJlY29yZHNfcmF3ID09IChyZWNvcmRzIC0gMSkgJiB1bmlxdWVfcmVjb3JkcyA9PSByZWNvcmRzX3JhdywgXCJZZXNcIixcIk5vXCIpKVxuICAgICkgJT4lXG4gICAgbXV0YXRlKFxuICAgICAgICBgUmVjb3JkcyBMb2FkZWRgID0gcHJldHR5TnVtKHJlY29yZHNfcmF3LCBiaWcubWFyayA9ICcsJylcbiAgICAgICAgLCBgVW5pcXVlIG9uIFN0b3JlL1dlZWsvVVBDYCA9IHByZXR0eU51bSh1bmlxdWVfcmVjb3JkcywgYmlnLm1hcmsgPSAnLCcpXG4gICAgKSAlPiVcbiAgICBzZWxlY3QoRmlsZSA9IGZpbGUsIFJlY29yZHMgPSByZWNvcmRzX2NsZWFuLCBgUmVjb3JkcyBMb2FkZWRgLCBgVW5pcXVlIG9uIFN0b3JlL1dlZWsvVVBDYCwgYFBhc3M/YCkgJT4lXG4gICAgcGFuZGVyKHNwbGl0LnRhYmxlID0gSW5mKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX2ZpbGVzIDwtIHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZVstbGVuZ3RoKHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZSldXG50aXNzdWVfZmlsZXNfbGlzdCA8LSBsYXBwbHkodGlzc3VlX2ZpbGVzLCBmbl9sb2FkX3dlZWtseV9maWxlKVxudGlzc3VlX3dlZWtseSA8LSBiaW5kX3Jvd3ModGlzc3VlX2ZpbGVzX2xpc3QpXG5sYXBwbHkodGlzc3VlX2ZpbGVzX2xpc3QsIGZuX2ludGVncml0eV9jaGVjaykgJT4lXG4gICAgYmluZF9yb3dzKCkgJT4lXG4gICAgYmluZF9yb3dzKGRhdGFfZnJhbWUocmVjb3Jkc19yYXcgPSBzdW0oLiRyZWNvcmRzX3JhdyksIHVuaXF1ZV9yZWNvcmRzID0gc3VtKC4kdW5pcXVlX3JlY29yZHMpKSkgJT4lXG4gICAgYmluZF9jb2xzKHRpc3N1ZV93ZWVrbHlfZmlsZXMpICU+JVxuICAgIG11dGF0ZShcbiAgICAgICAgIG4gPSBuKClcbiAgICAgICAgICwgYFBhc3M/YCA9IGlmX2Vsc2UoZmlsZSA9PSBcInRvdGFsXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmX2Vsc2UocmVjb3Jkc19yYXcgPT0gKHJlY29yZHMgLSBuICsgMSkgJiB1bmlxdWVfcmVjb3JkcyA9PSByZWNvcmRzX3JhdywgXCJZZXNcIixcIk5vXCIpLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZl9lbHNlKHJlY29yZHNfcmF3ID09IChyZWNvcmRzIC0gMSkgJiB1bmlxdWVfcmVjb3JkcyA9PSByZWNvcmRzX3JhdywgXCJZZXNcIixcIk5vXCIpKVxuICAgICkgJT4lXG4gICAgc2VsZWN0KEZpbGUgPSBmaWxlLCBSZWNvcmRzID0gcmVjb3Jkc19jbGVhbiwgYFJlY29yZHMgTG9hZGVkYCA9IHJlY29yZHNfcmF3LCBcbiAgICAgICAgICAgYFVuaXF1ZSBvbiBTdG9yZS9XZWVrL1VQQ2AgPSB1bmlxdWVfcmVjb3JkcywgYFBhc3M/YCkgJT4lXG4gICAgcGFuZGVyKHNwbGl0LnRhYmxlID0gSW5mLCBqdXN0aWZ5ID0gYygnbGVmdCcsICdyaWdodCcsJ3JpZ2h0JywncmlnaHQnLCdjZW50ZXInKSlcbmBgYCJ9 -->
 <pre class="r"><code>tissue_files &lt;- tissue_weekly_files$file[-length(tissue_weekly_files$file)]
 tissue_files_list &lt;- lapply(tissue_files, fn_load_weekly_file)
 tissue_weekly &lt;- bind_rows(tissue_files_list)
@@ -601,206 +811,203 @@ lapply(tissue_files_list, fn_integrity_check) %&gt;%
                             if_else(records_raw == (records - n + 1) &amp; unique_records == records_raw, &quot;Yes&quot;,&quot;No&quot;), 
                             if_else(records_raw == (records - 1) &amp; unique_records == records_raw, &quot;Yes&quot;,&quot;No&quot;))
     ) %&gt;%
-    mutate(
-        `Records Loaded` = prettyNum(records_raw, big.mark = ',')
-        , `Unique on Store/Week/UPC` = prettyNum(unique_records, big.mark = ',')
-    ) %&gt;%
-    select(File = file, Records = records_clean, `Records Loaded`, `Unique on Store/Week/UPC`, `Pass?`) %&gt;%
-    pander(split.table = Inf)</code></pre>
+    select(File = file, Records = records_clean, `Records Loaded` = records_raw, 
+           `Unique on Store/Week/UPC` = unique_records, `Pass?`) %&gt;%
+    pander(split.table = Inf, justify = c('left', 'right','right','right','center'))</code></pre>
 <!-- rnb-source-end -->
-<table>
+<table style="width:100%;">
 <colgroup>
 <col width="43%"></col>
-<col width="10%"></col>
-<col width="15%"></col>
-<col width="24%"></col>
+<col width="11%"></col>
+<col width="14%"></col>
+<col width="23%"></col>
 <col width="6%"></col>
 </colgroup>
 <thead>
 <tr class="header">
-<th align="center">File</th>
-<th align="center">Records</th>
-<th align="center">Records Loaded</th>
-<th align="center">Unique on Store/Week/UPC</th>
+<th align="left">File</th>
+<th align="right">Records</th>
+<th align="right">Records Loaded</th>
+<th align="right">Unique on Store/Week/UPC</th>
 <th align="center">Pass?</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">./Year1/External/factiss/factiss_drug_1114_1165</td>
-<td align="center">276,046</td>
-<td align="center">276,045</td>
-<td align="center">276,045</td>
+<td align="left">./Year1/External/factiss/factiss_drug_1114_1165</td>
+<td align="right">276,046</td>
+<td align="right">276,045</td>
+<td align="right">276,045</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year1/External/factiss/factiss_groc_1114_1165</td>
-<td align="center">1,861,943</td>
-<td align="center">1,861,942</td>
-<td align="center">1,861,942</td>
+<td align="left">./Year1/External/factiss/factiss_groc_1114_1165</td>
+<td align="right">1,861,943</td>
+<td align="right">1,861,942</td>
+<td align="right">1,861,942</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year2/External/factiss/factiss_drug_1166_1217</td>
-<td align="center">262,577</td>
-<td align="center">262,576</td>
-<td align="center">262,576</td>
+<td align="left">./Year2/External/factiss/factiss_drug_1166_1217</td>
+<td align="right">262,577</td>
+<td align="right">262,576</td>
+<td align="right">262,576</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year2/External/factiss/factiss_groc_1166_1217</td>
-<td align="center">1,816,241</td>
-<td align="center">1,816,240</td>
-<td align="center">1,815,556</td>
-<td align="center">No</td>
+<td align="left">./Year2/External/factiss/factiss_groc_1166_1217</td>
+<td align="right">1,816,241</td>
+<td align="right">1,816,240</td>
+<td align="right">1,816,240</td>
+<td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year3/External/factiss/factiss_drug_1218_1269</td>
-<td align="center">260,883</td>
-<td align="center">260,882</td>
-<td align="center">260,882</td>
+<td align="left">./Year3/External/factiss/factiss_drug_1218_1269</td>
+<td align="right">260,883</td>
+<td align="right">260,882</td>
+<td align="right">260,882</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year3/External/factiss/factiss_groc_1218_1269</td>
-<td align="center">1,919,860</td>
-<td align="center">1,919,859</td>
-<td align="center">1,919,859</td>
+<td align="left">./Year3/External/factiss/factiss_groc_1218_1269</td>
+<td align="right">1,919,860</td>
+<td align="right">1,919,859</td>
+<td align="right">1,919,859</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year4/External/factiss/factiss_drug_1270_1321</td>
-<td align="center">267,729</td>
-<td align="center">267,728</td>
-<td align="center">267,728</td>
+<td align="left">./Year4/External/factiss/factiss_drug_1270_1321</td>
+<td align="right">267,729</td>
+<td align="right">267,728</td>
+<td align="right">267,728</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year4/External/factiss/factiss_groc_1270_1321</td>
-<td align="center">1,871,891</td>
-<td align="center">1,871,890</td>
-<td align="center">1,871,890</td>
+<td align="left">./Year4/External/factiss/factiss_groc_1270_1321</td>
+<td align="right">1,871,891</td>
+<td align="right">1,871,890</td>
+<td align="right">1,871,890</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year5/External/factiss/factiss_drug_1322_1373</td>
-<td align="center">313,035</td>
-<td align="center">313,034</td>
-<td align="center">313,034</td>
+<td align="left">./Year5/External/factiss/factiss_drug_1322_1373</td>
+<td align="right">313,035</td>
+<td align="right">313,034</td>
+<td align="right">313,034</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year5/External/factiss/factiss_groc_1322_1373</td>
-<td align="center">1,941,955</td>
-<td align="center">1,941,954</td>
-<td align="center">1,941,954</td>
+<td align="left">./Year5/External/factiss/factiss_groc_1322_1373</td>
+<td align="right">1,941,955</td>
+<td align="right">1,941,954</td>
+<td align="right">1,941,954</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year6/External/factiss/factiss_drug_1374_1426</td>
-<td align="center">326,100</td>
-<td align="center">326,099</td>
-<td align="center">326,099</td>
+<td align="left">./Year6/External/factiss/factiss_drug_1374_1426</td>
+<td align="right">326,100</td>
+<td align="right">326,099</td>
+<td align="right">326,099</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year6/External/factiss/factiss_groc_1374_1426</td>
-<td align="center">1,959,222</td>
-<td align="center">1,959,221</td>
-<td align="center">1,958,829</td>
-<td align="center">No</td>
+<td align="left">./Year6/External/factiss/factiss_groc_1374_1426</td>
+<td align="right">1,959,222</td>
+<td align="right">1,959,221</td>
+<td align="right">1,959,221</td>
+<td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year7/External/factiss/factiss_drug_1427_1478</td>
-<td align="center">353,290</td>
-<td align="center">353,289</td>
-<td align="center">353,289</td>
+<td align="left">./Year7/External/factiss/factiss_drug_1427_1478</td>
+<td align="right">353,290</td>
+<td align="right">353,289</td>
+<td align="right">353,289</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year7/External/factiss/factiss_groc_1427_1478</td>
-<td align="center">1,853,608</td>
-<td align="center">1,853,607</td>
-<td align="center">1,853,607</td>
+<td align="left">./Year7/External/factiss/factiss_groc_1427_1478</td>
+<td align="right">1,853,608</td>
+<td align="right">1,853,607</td>
+<td align="right">1,853,607</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year8/factiss/factiss_drug_1479_1530</td>
-<td align="center">395,891</td>
-<td align="center">395,890</td>
-<td align="center">395,890</td>
+<td align="left">./Year8/factiss/factiss_drug_1479_1530</td>
+<td align="right">395,891</td>
+<td align="right">395,890</td>
+<td align="right">395,890</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year8/factiss/factiss_groc_1479_1530</td>
-<td align="center">1,888,008</td>
-<td align="center">1,888,007</td>
-<td align="center">1,888,007</td>
+<td align="left">./Year8/factiss/factiss_groc_1479_1530</td>
+<td align="right">1,888,008</td>
+<td align="right">1,888,007</td>
+<td align="right">1,888,007</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year9/factiss/factiss_drug_1531_1582</td>
-<td align="center">371,024</td>
-<td align="center">371,023</td>
-<td align="center">371,023</td>
+<td align="left">./Year9/factiss/factiss_drug_1531_1582</td>
+<td align="right">371,024</td>
+<td align="right">371,023</td>
+<td align="right">371,023</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year9/factiss/factiss_groc_1531_1582</td>
-<td align="center">1,823,431</td>
-<td align="center">1,823,430</td>
-<td align="center">1,823,430</td>
+<td align="left">./Year9/factiss/factiss_groc_1531_1582</td>
+<td align="right">1,823,431</td>
+<td align="right">1,823,430</td>
+<td align="right">1,823,430</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year10/factiss/factiss_drug_1583_1634</td>
-<td align="center">356,381</td>
-<td align="center">356,380</td>
-<td align="center">356,380</td>
+<td align="left">./Year10/factiss/factiss_drug_1583_1634</td>
+<td align="right">356,381</td>
+<td align="right">356,380</td>
+<td align="right">356,380</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year10/factiss/factiss_groc_1583_1634</td>
-<td align="center">1,702,116</td>
-<td align="center">1,702,115</td>
-<td align="center">1,702,115</td>
+<td align="left">./Year10/factiss/factiss_groc_1583_1634</td>
+<td align="right">1,702,116</td>
+<td align="right">1,702,115</td>
+<td align="right">1,702,115</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">./Year11/factiss/factiss_drug_1635_1686</td>
-<td align="center">359,005</td>
-<td align="center">359,004</td>
-<td align="center">359,004</td>
+<td align="left">./Year11/factiss/factiss_drug_1635_1686</td>
+<td align="right">359,005</td>
+<td align="right">359,004</td>
+<td align="right">359,004</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="even">
-<td align="center">./Year11/factiss/factiss_groc_1635_1686</td>
-<td align="center">1,666,630</td>
-<td align="center">1,666,629</td>
-<td align="center">1,666,629</td>
+<td align="left">./Year11/factiss/factiss_groc_1635_1686</td>
+<td align="right">1,666,630</td>
+<td align="right">1,666,629</td>
+<td align="right">1,666,629</td>
 <td align="center">Yes</td>
 </tr>
 <tr class="odd">
-<td align="center">total</td>
-<td align="center">23,846,866</td>
-<td align="center">23,846,844</td>
-<td align="center">23,845,768</td>
-<td align="center">No</td>
+<td align="left">total</td>
+<td align="right">23,846,866</td>
+<td align="right">23,846,844</td>
+<td align="right">23,846,844</td>
+<td align="center">Yes</td>
 </tr>
 </tbody>
 </table>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>We can show that all tissue UPC’s are **3765 characters by</p>
+<p>We are going to construct a UPC column from the columns SY, GE, VEND, and ITEM in the sales information table. We can show that all tissue UPC’s in the UPC Lookup Table are <strong>3765</strong> characters long by</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGUoc2FwcGx5KHRpc3N1ZV91cGMkdXBjLCBuY2hhcikpICU+JVxuICAgIHBhbmRlcigpXG5gYGAifQ== -->
 <pre class="r"><code>table(sapply(tissue_upc$upc, nchar)) %&gt;%
     pander()</code></pre>
 <!-- rnb-source-end -->
-<table style="width:6%;">
+<table style="width:10%;">
 <colgroup>
-<col width="5%"></col>
+<col width="9%"></col>
 </colgroup>
 <thead>
 <tr class="header">
@@ -809,13 +1016,13 @@ lapply(tissue_files_list, fn_integrity_check) %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">3765</td>
+<td align="center">3,765</td>
 </tr>
 </tbody>
 </table>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Now we need to create a UPC from the components and properly name the columns.</p>
+<p>We create a UPC from the components and properly name the columns.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX3dlZWtseTIgPC0gXG4gICAgdGlzc3VlX3dlZWtseSAlPiVcbiAgICAgICAgbXV0YXRlKFxuICAgICAgICAgICAgdXBjID0gcGFzdGUoc3RyX3BhZChTWSwgd2lkdGggPSAyLCBcImxlZnRcIiwgXCIwXCIpLCBzdHJfcGFkKEdFLCB3aWR0aCA9IDIsIFwibGVmdFwiLCBcIjBcIiksIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgc3RyX3BhZChWRU5ELCB3aWR0aCA9IDUsIFwibGVmdFwiLCBcIjBcIiksIHN0cl9wYWQoSVRFTSwgd2lkdGggPSA1LCBcImxlZnRcIiwgXCIwXCIpLCBzZXAgPSBcIi1cIilcbiAgICAgICAgICAgICwgYXZnX3ByaWNlID0gRE9MTEFSUyAvIFVOSVRTXG4gICAgICAgICkgJT4lIFxuICAgICAgICByZW5hbWUoZmVhdHVyZSA9IGBGYCwgZGlzcGxheSA9IEQsIHByaWNlX3JlZHVjdGlvbiA9IFBSKSAlPiVcbiAgICAgICAgc2V0TmFtZXModG9sb3dlcihtYWtlLm5hbWVzKG5hbWVzKC4pKSkpICU+JVxuICAgICAgICBzZWxlY3QoaXJpX3llYXIsIGlyaV9rZXksIHdlZWssIHVwYywgdW5pdHMsIGRvbGxhcnMsIGF2Z19wcmljZSwgZmVhdHVyZSwgZGlzcGxheSwgcHJpY2VfcmVkdWN0aW9uKVxuYGBgIn0= -->
@@ -832,7 +1039,7 @@ lapply(tissue_files_list, fn_integrity_check) %&gt;%
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Now, let’s check that this dataset is indeed at the store (iri_key) - week - upc level of detail.</p>
+<p>Now, let’s verify again that this dataset is indeed at the store (iri_key) - week - UPC level of detail, with the new UPC column.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YV9mcmFtZShcbiAgICBgUmVjb3JkIENvdW50YCA9IHRpc3N1ZV93ZWVrbHkyICU+JSBucm93KClcbiAgICAsIGBTdG9yZSAtIFdlZWsgLSBVUEMgQ29tYmluYXRpb25zYCA9IHRpc3N1ZV93ZWVrbHkyICU+JSBzZWxlY3QoaXJpX2tleSwgd2VlaywgdXBjKSAlPiUgZGlzdGluY3QoKSAlPiUgbnJvdygpXG4pICU+JVxuICAgIHBhbmRlcigpXG5gYGAifQ== -->
@@ -855,8 +1062,8 @@ lapply(tissue_files_list, fn_integrity_check) %&gt;%
 </thead>
 <tbody>
 <tr class="odd">
-<td align="center">23846844</td>
-<td align="center">23845768</td>
+<td align="center">23,846,844</td>
+<td align="center">23,846,844</td>
 </tr>
 </tbody>
 </table>
@@ -917,18 +1124,18 @@ data_frame(
 <tbody>
 <tr class="odd">
 <td align="center">1-6</td>
-<td align="center">13077470</td>
-<td align="center">13077470</td>
+<td align="center">13,077,470</td>
+<td align="center">13,077,470</td>
 </tr>
 <tr class="even">
 <td align="center">7</td>
-<td align="center">2206896</td>
-<td align="center">2206896</td>
+<td align="center">2,206,896</td>
+<td align="center">2,206,896</td>
 </tr>
 <tr class="odd">
 <td align="center">8-11</td>
-<td align="center">8562478</td>
-<td align="center">8562478</td>
+<td align="center">8,562,478</td>
+<td align="center">8,562,478</td>
 </tr>
 </tbody>
 </table>
@@ -937,15 +1144,15 @@ data_frame(
 <p>This passes our data integrity check, so we’ll combine the 3 time windows datasets.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX2ZpbmFsIDwtIGJpbmRfcm93cyh0aXNzdWVfd2Vla2x5XzFfdG9fNiwgdGlzc3VlX3dlZWtseV83LCB0aXNzdWVfd2Vla2x5XzhfdG9fMTEpXG50aXNzdWVfZmluYWwgJT4lXG4gICAgaGVhZCgxMClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGlzc3VlX2ZpbmFsIDwtIGJpbmRfcm93cyh0aXNzdWVfd2Vla2x5XzFfdG9fNiwgdGlzc3VlX3dlZWtseV83LCB0aXNzdWVfd2Vla2x5XzhfdG9fMTEpXG50aXNzdWVfZmluYWwgJT4lXG4gICAgaGVhZCgyMClcbmBgYCJ9 -->
 <pre class="r"><code>tissue_final &lt;- bind_rows(tissue_weekly_1_to_6, tissue_weekly_7, tissue_weekly_8_to_11)
 tissue_final %&gt;%
-    head(10)</code></pre>
+    head(20)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MjIsIm5yb3ciOjEwfSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxWHUyL1RRQmgzWHBTbXRJU0h1Z0ZHU0ZVbGxDaE5tZ1FHYUV4NkNWR2RPRGd1dEFncGN1TnJzZXJheG5ZS1pXSmg1bzlnUjdBeE04UE13Z0F6REN5d0lCSHVVbjl1bkRwVmVWWGlZZW5pKzM2LzMzMzNQUzVSVHB4ZnlzU1g0Z3pEaEpsSUpNU0VJMlFhRFpPUEVCTmxSdW43SHNORVRwREpKQm5qWk1SNzVQN0d0ajUrN3RtK2h1Yy9lbk4vZzBuMDlOdUJIa3VuaytsTU1wdFBrMG1tVUxpWTdpZG1YQ0tkenM0VWhxeVk4YTNJQW5FaDUzZmxyY2pORm5MQlJDYVhEZG84azUrZENYYVZueTBNaGx1Z1JEYWJtNzA0c0FLSWZMNnZJN0ZlQzdlckhuWGZkTkdJTzZBakUxUmZQTXUvSk0rcnVZK2ZYank2TmYxNTdzdVRrL2ZmVlo0VXo3eU9Yeklmdnk0ZWZmL3c5UE5ySDRxWG56NG15SjNpK1RmVFZGbWN2bkNOTW5OZFZ6ZlJNMFh3QzM3bTN2cjllbnJ3TzFhaHhGWEFkK2wyL1BaM09Gb1g2dWhBNXp2MURYckNBZGhlK2xBQTFwL2YyUklub1lvZ0xyTkp0c3lWcWh6UFN0Vm1jeEd4OFB3WEhyVFEzNkZ4bityUEJ2MlpuVmlvMXE0Z2tWOW1TenduTHJBbFFXejhEVlNpSVFvbENZbnNGRnZoYWxkNE5CVC9YNCs5NmpHeXdDTlVSMHUvM2t5NEpvbVNueTl4SWtSMGFoQm5GM2xKNUloWkt3dWlLNG8xRnN2bHB0LzRWNzZ5aDdsbVV4QWxOQS9wMzdoYWxkQ0JHUVBubzBaQ3JOWXJyam5XRUVvTFNHS2IxWnNvV0hHb3pOV3EvSEl3K1QzYUllU2U0ZjFDOHpqSEM0aTlqc2pKbkdKNVFhb0s5V0RoYUYzdzgzMkFQOWhZaG0xNENmMjhrUjFxQkt6eFJ6SW1DUTFXYUtCNlh4b1M0c1FlTmx6em02SGpGSm9pWjJzZTdZTTVxSVB3WTZiL3NoVnJhN0p0dXlFREdGZGtSMDZ0V3ZJR0hwVHJCQVA1SlB3c3FKYmEyc0t5QlZ0UmV4MXZ3Ui9idXhpdnUvTkl4MnlEcTQ2dU9qWXNVUXhOa3kwd1IrWE50WlpwcVcwTS9DcVduWTdsbVlwcW01b01PeHp0U1ZzV1ZqcHRSelYwRjU0Z0h0ZHdxeTA3ZU0yd1FEeGhiOGlhdGdzMVpRdnJUcXR0YkppeUR1aWhUYXdyQnVRVlc3RmtYWEdOSTZabDBPMVN6cGFKdldJYW1xZU8ydXA5N09XaktLcWpibUpJY0Z6dmJLeGdLMldzcGt3TmRqdEdYVkdJWm9kMUc0T3J4STdhdm8weHFacS9LNk9XY1RjRm5hSDNnZkFEOHRIdGRqK1QxOWNCOFloaDBob1JhWmhlc21NRHZROVpBMENpbzFQWFNySjl1Nk92SjhsZGR1ZEd6cmo3aFZ3TTVwUGJlMGE2cnE4WTFCUHJhNnJ1bFV1VFY3QUdEU0E1OUZKSWtXYnFEcHhFZ3RvcHgzQmswTVZKalFIcEpjZDgvUVpPZDR3YlV4QUFBQT09In0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MjIsIm5yb3ciOjIwfSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxWnowL2JWaHczK1VGR0tEUXRpTnMyVjVvUTBwVEljWnhmaHkweHlTTkVtRGgxRElWdUVqS0pvUkhCemh5SGpwNTIyYmwvUk85c3g1MjdhM2Z1WllmdHZFcWJOSFdYU3MzZWMveU1iV3lVMFJTTktwWmUzdnQ4djUvdmovZjkrdGxTTEpSMzZPaE9sQ0NJQUJFTVRoR0JJRnlHQXZCbmlnZ1JNMmorbGlDQ0MzQ3hCTWNjSEl1R2Nyd2padmdkQnB6T1pCZ21uNTBnQzFsMUR6MTh4L0dWY3pqcWZvZWk0aFFkVDJVb3VLQ3oyVHhsVnlSTkJVV2xrbGtmaTZURElvVVZ1YlRUbFdXUlpySnBid1dkVG5rRnB6Tk0wdHRWaHNtNjA4MGlSU3FWWnZJdUM2eklaRnpwR29vTXpWQldWcmtjVXVUaGxZdW5LVHFmOTFha3FLU2ZJdXVqU05JK0NvWVpxUjlXZFJrbU4xcWpzQ0pGMFRSbE84dGg0L0FQejJISW5KRlJ4QnoyY3hxMHpkT21YZGcySTkwODhsdTh4NzJBMXkrRnYxNC9mL3IxeWorRk4yZUxUMzZ2bkJVL2ZSbjlvdnZzWmZIMkg5OS84dFA5VjhVdmYzd0dKZDhVUC85MUJUR0xLN243U0ZNWW1MeDVBd29XamlCM3IzKzI4QzBFbno4dGZsWkJBZFlMQXpQT3dvdGhmSXpES2VNcXZESE1vamhQbkZmaE4yZWVsbitjNXl6MlA1UmY0TG55TFB4cDZIK3c4Ti9EdUdiOFdWTi9kbUcyOHJEeXRKL1JVSTJ2Z1J1OG5sb2RpWHgrYzNwZEFSKzUvWnJ5a1YvbTE4L0dqMnZueDRqekp0MHJzU0tvOE1JdUdTZlgyRktWNVVpeDJtaHNBUkpmRStLRU9DRU9pYzZ6TStkZ1RZVC9MNkd6VndzYjFjMVZJSEM3WklsamhRMnl4QXYxRDBFVnF3dDhTUVFDdVV4VzJNMVZEbHhSUGxjWHF0dncvaWM1ZGhWdzcxRjRQY1daTkgvU2ZKTVMyZUFBcUlHZDhjT1lDV0ZVcmx4aUJWek9qOTF5Y29zVEJSYkN6VFZlTUVuaCt0YmFXc01MTEJxQUJEdklwaUVLb0ZZUjE2KzdVMWVyeStUOWVIT0V6bDU5eERZYXZDQ0NNcjRqSDZ4WFJYQ2pnWHRMOHhpVDhJYXZpWmZZdXg0Z203QmcxVnJGaExOMXZyUUJSTEpSZlFpOEdkTnI3R2FWMi9WVy9oZnUxWlVSQVZTMjRCUFJHN3BNWGR4TDgvWFl2VU4wYWVuR0NPK3lIQS9JYlFBZmtjc2t4NHRWdnVaTm5LbnhUdjBGd2VXQmJrRTZXeTVYeGVvMmFQaTU4Q0tObk9HSTBGblpNRTNXclE2K08wajVndkhHR1JOdzFtSlc1T3NrWHdjMVc5ZEZ3QXFHekovem5rVjNrV2dabm9veUdJUG0rdk1mcGFvMndYVWQvQThKT2o5ZWhac2RxZGN6QzRtRjBaYWtTNGtEVFRxVzNYUUZ5akI5Q2IvejJscDc3MVNXTkJ3SzRTUDUxSVNoeDdKOFpLNkQvVzRUdStvcmJiMkhUVnBxcHlOcEdNNUlKNGQ3WGEzZGxMSCtRSmIwdm1iQlZydlg3VWc0d20yRHVxZkpyWDVUYjZzS2Z2ZENqNGZ5WGxQUzVVTlZ3K1Q1M3JIVTZWeVFkaVZOVnZTOXBucmNsUlFzblQ2UmxaYUs5eFhlMXlTbGhaKytYVTFGNFJMNmFWZTJpcWwyTEhhbzEzNGlXL3RwdGRwNiswVEdHNXhUK3NmN3NwWlFEeExkRG81MkI3bENJclE3V2VuSjJGWHNuTjE3Sk11d2FzNnV6R2pxNHdUdURQb0ROL0FkL0JrTUJxL2c5TlpGanFoZFZDTklEYUNQbG1GWDc2YzBseURXVjVEclZyejVxSzhjeFpQb2ExdVVPUDl6ZDg1Y0w5cldTOE9Zd1lIcEs0enJLU3VIYmNVcVYwZmFsenU0QVhBUHhoWVNzSm1LanU5RUtPMGxkRldYTUM4S2E0d2x4dWFJdC84Q29TNmUzNk1kQUFBPSJ9 -->
 <div data-pagedtable>
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["iri_year"],"name":[1],"type":["int"],"align":["right"]},{"label":["iri_key"],"name":[2],"type":["int"],"align":["right"]},{"label":["week"],"name":[3],"type":["int"],"align":["right"]},{"label":["upc"],"name":[4],"type":["chr"],"align":["left"]},{"label":["units"],"name":[5],"type":["int"],"align":["right"]},{"label":["dollars"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["avg_price"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["feature"],"name":[8],"type":["chr"],"align":["left"]},{"label":["display"],"name":[9],"type":["int"],"align":["right"]},{"label":["price_reduction"],"name":[10],"type":["int"],"align":["right"]},{"label":["large_category"],"name":[11],"type":["chr"],"align":["left"]},{"label":["small_category"],"name":[12],"type":["chr"],"align":["left"]},{"label":["parent_company"],"name":[13],"type":["chr"],"align":["left"]},{"label":["vendor"],"name":[14],"type":["chr"],"align":["left"]},{"label":["brand"],"name":[15],"type":["chr"],"align":["left"]},{"label":["product.type"],"name":[16],"type":["chr"],"align":["left"]},{"label":["color"],"name":[17],"type":["chr"],"align":["left"]},{"label":["size"],"name":[18],"type":["chr"],"align":["left"]},{"label":["additives"],"name":[19],"type":["chr"],"align":["left"]},{"label":["number.of.ply"],"name":[20],"type":["chr"],"align":["left"]},{"label":["type.of.dispenser"],"name":[21],"type":["chr"],"align":["left"]},{"label":["number.of.sheets"],"name":[22],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"664497","3":"1114","4":"00-02-36000-27790","5":"5","6":"8.65","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"ASSORTED","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-36000-00317","5":"2","6":"1.06","7":"0.53","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"POCKET SIZE","19":"MISSING","20":"2 PLY","21":"TEAR OPEN","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-27710","5":"1","6":"1.73","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-03-36000-28590","5":"4","6":"7.96","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-25475","5":"1","6":"3.99","7":"3.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-25253","5":"9","6":"30.69","7":"3.41","8":"NONE","9":"2","10":"1","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-36000-26410","5":"7","6":"13.93","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX COLDCARE","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"ALOE VERA & LOTION","20":"3 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-26470","5":"7","6":"12.11","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX COLDCARE ULTRA COMFOR","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"3 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-37000-33549","5":"1","6":"1.99","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PROCTER & GAMBLE","14":"PROCTER & GAMBLE","15":"PUFFS","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"NO LOTION","20":"2 PLY","21":"TOP & SIDE OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-37000-33566","5":"1","6":"3.79","7":"3.79","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PROCTER & GAMBLE","14":"PROCTER & GAMBLE","15":"PUFFS","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"NO LOTION","20":"2 PLY","21":"TOP & SIDE OPENING","22":"MISSING"}],"options":{"columns":{"min":{},"max":[10],"total":[22]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+{"columns":[{"label":["iri_year"],"name":[1],"type":["int"],"align":["right"]},{"label":["iri_key"],"name":[2],"type":["chr"],"align":["left"]},{"label":["week"],"name":[3],"type":["int"],"align":["right"]},{"label":["upc"],"name":[4],"type":["chr"],"align":["left"]},{"label":["units"],"name":[5],"type":["int"],"align":["right"]},{"label":["dollars"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["avg_price"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["feature"],"name":[8],"type":["chr"],"align":["left"]},{"label":["display"],"name":[9],"type":["int"],"align":["right"]},{"label":["price_reduction"],"name":[10],"type":["int"],"align":["right"]},{"label":["large_category"],"name":[11],"type":["chr"],"align":["left"]},{"label":["small_category"],"name":[12],"type":["chr"],"align":["left"]},{"label":["parent_company"],"name":[13],"type":["chr"],"align":["left"]},{"label":["vendor"],"name":[14],"type":["chr"],"align":["left"]},{"label":["brand"],"name":[15],"type":["chr"],"align":["left"]},{"label":["product.type"],"name":[16],"type":["chr"],"align":["left"]},{"label":["color"],"name":[17],"type":["chr"],"align":["left"]},{"label":["size"],"name":[18],"type":["chr"],"align":["left"]},{"label":["additives"],"name":[19],"type":["chr"],"align":["left"]},{"label":["number.of.ply"],"name":[20],"type":["chr"],"align":["left"]},{"label":["type.of.dispenser"],"name":[21],"type":["chr"],"align":["left"]},{"label":["number.of.sheets"],"name":[22],"type":["chr"],"align":["left"]}],"data":[{"1":"1","2":"664497","3":"1114","4":"00-02-36000-27790","5":"5","6":"8.65","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"ASSORTED","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-36000-00317","5":"2","6":"1.06","7":"0.53","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"POCKET SIZE","19":"MISSING","20":"2 PLY","21":"TEAR OPEN","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-27710","5":"1","6":"1.73","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-03-36000-28590","5":"4","6":"7.96","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-25475","5":"1","6":"3.99","7":"3.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-25253","5":"9","6":"30.69","7":"3.41","8":"NONE","9":"2","10":"1","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-36000-26410","5":"7","6":"13.93","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX COLDCARE","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"ALOE VERA & LOTION","20":"3 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-36000-26470","5":"7","6":"12.11","7":"1.73","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX COLDCARE ULTRA COMFOR","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"3 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-01-37000-33549","5":"1","6":"1.99","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PROCTER & GAMBLE","14":"PROCTER & GAMBLE","15":"PUFFS","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"NO LOTION","20":"2 PLY","21":"TOP & SIDE OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-02-37000-33566","5":"1","6":"3.79","7":"3.79","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PROCTER & GAMBLE","14":"PROCTER & GAMBLE","15":"PUFFS","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"NO LOTION","20":"2 PLY","21":"TOP & SIDE OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"00-03-37000-62405","5":"1","6":"1.99","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PROCTER & GAMBLE","14":"PROCTER & GAMBLE","15":"PUFFS EXTRA STRENGTH","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"MISSING","20":"2 PLY","21":"TOP & SIDE OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"88-03-99998-50299","5":"3","6":"2.97","7":"0.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PRIVATE LABEL","14":"PRIVATE LABEL","15":"PRIVATE LABEL","16":"FACIAL TISSUE","17":"WHITE","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"88-03-99998-50301","5":"1","6":"1.99","7":"1.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PRIVATE LABEL","14":"PRIVATE LABEL","15":"PRIVATE LABEL","16":"FACIAL TISSUE","17":"WHITE","18":"REGULAR","19":"NO ADDITIVES","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"88-03-99998-50307","5":"3","6":"3.57","7":"1.19","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PRIVATE LABEL","14":"PRIVATE LABEL","15":"PRIVATE LABEL","16":"FACIAL TISSUE","17":"WHITE","18":"REGULAR","19":"NO LOTION","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"88-03-99998-50312","5":"6","6":"10.14","7":"1.69","8":"NONE","9":"1","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PRIVATE LABEL","14":"PRIVATE LABEL","15":"PRIVATE LABEL","16":"FACIAL TISSUE","17":"WHITE","18":"FAMILY","19":"NO ADDITIVES","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1114","4":"88-03-99998-50344","5":"2","6":"1.98","7":"0.99","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"PRIVATE LABEL","14":"PRIVATE LABEL","15":"PRIVATE LABEL","16":"FACIAL TISSUE","17":"WHITE","18":"REGULAR","19":"ALOE VERA & LOTION","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1115","4":"00-02-36000-27790","5":"5","6":"4.95","7":"0.99","8":"B","9":"0","10":"1","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"ASSORTED","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1115","4":"00-03-36000-24480","5":"2","6":"1.98","7":"0.99","8":"NONE","9":"0","10":"1","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"ASSORTED PRINT","18":"MISSING","19":"MISSING","20":"2 PLY","21":"TOP OPENING","22":"MISSING"},{"1":"1","2":"664497","3":"1115","4":"00-01-36000-00317","5":"5","6":"2.65","7":"0.53","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"POCKET SIZE","19":"MISSING","20":"2 PLY","21":"TEAR OPEN","22":"MISSING"},{"1":"1","2":"664497","3":"1115","4":"00-01-36000-30220","5":"1","6":"1.69","7":"1.69","8":"NONE","9":"0","10":"0","11":"CATEGORY - FACIAL TISSUE","12":"FACIAL TISSUE","13":"KIMBERLY CLARK CORP","14":"KIMBERLY CLARK CORP","15":"KLEENEX","16":"FACIAL TISSUE","17":"WHITE","18":"POCKET SIZE","19":"MISSING","20":"2 PLY","21":"TEAR OPEN","22":"MISSING"}],"options":{"columns":{"min":{},"max":[10],"total":[22]},"rows":{"min":[10],"max":[10],"total":[20]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -958,7 +1165,7 @@ tissue_final %&gt;%
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRHluYW1pYyBCcmFuZCBFcXVpdHkiCm91dHB1dDoKICBodG1sX25vdGVib29rOgogICAgY29kZV9mb2xkaW5nOiBzaG93CiAgICBjc3M6IHN0eWxlLmNzcwogICAgbnVtYmVyX3NlY3Rpb25zOiB5ZXMKICAgIHRoZW1lOiBmbGF0bHkKICAgIHRvYzogeWVzCiAgICB0b2NfZmxvYXQ6IHllcwotLS0KCiMgQmFzaWMgU2V0dXAKCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQojIFNldCBvcHRpb25zIGZvciB0aGUgcm1hcmtkb3duIGZpbGUKa25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgZmlnLmFsaWduID0gJ2NlbnRlcicsIHdpZHRoID0gMTAwKQppbnZpc2libGUoU3lzLnNldGxvY2FsZSgiTENfQUxMIiwgImVuX1VTLlVURi04IikpCm9wdGlvbnMoZGlnaXRzID0gNCwgd2lkdGggPSAyMjApICMgUHJldmVudCBwcmludGluZyBpbiBzY2llbnRpZmljIG5vdGF0aW9uCmBgYAoKYGBge3J9CiMgVXNlIHBhY21hbiB0byBsb2FkIHBhY2thZ2VzCnBhY21hbjo6cF9sb2FkKHRpZHl2ZXJzZSwgc3RyaW5nciwgcGFuZGVyKQoKIyBTZXQgd29ya2luZyBkaXJlY3RvcnkgdG8gdGhlIGV4dGVybmFsIGRyaXZlIGNvbnRhaW5pbmcgdGhlIElSSSBkYXRhc2V0CnZvbHVtZV9kaXIgPC0gIi9Wb2x1bWVzL0FEU18yMzUvQWNhZGVtaWMgRGF0YXNldCBFeHRlcm5hbCIKCmJhc2VfZGlyIDwtICcnCmRhdGFfZGlyIDwtIHBhc3RlMChiYXNlX2RpciwgImRhdGEvIikKdml6X2RpciA8LSBwYXN0ZTAoYmFzZV9kaXIsICJ2aXovIikKCmRpci5jcmVhdGUoZGF0YV9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKQpkaXIuY3JlYXRlKHZpel9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKQpgYGAKCiMgRGF0YSBTaXplIEFzc2Vzc21lbnQKCkJlZm9yZSB3ZSBiZWdpbiBsb2FkaW5nIGRhdGEsIGxldCdzIHN0YXJ0IGJ5IGFzc2Vzc2luZyB0aGUgZGF0YSBzaXplIG9mIGVhY2ggb2YgdGhlIHN1bW1hcnkgZmlsZXMuCgojIyBUaXNzdWUgQ2F0ZWdvcnkKCldlIHVzZSB0aGUgc2hlbGwgY29uc3RydWN0aW9uIGBmaW5kIC4gLW5hbWUgIm15ZmlsZSIgfCB4YXJncyB3YyAtIGxgIHRvIHJlY3Vyc2l2ZWx5IGZpbmQgYSBmaWxlIHdpdGggYSBwYXJ0aWN1bGFyIHJlZ3VsYXIgZXhwcmVzc2lvbiBjb25zdHJ1Y3Rpb24gYW5kIHRoZW4gcGVyZm9ybSB0aGUgbGluZSBjb3VudC4KCmBgYHtyfQp0aXNzdWVfY2F0ZWdvcnkgPC0gImZhY3Rpc3MiCgppZiAoIWZpbGUuZXhpc3RzKHBhc3RlMChkYXRhX2RpciwgInRpc3N1ZV93Yy5SRFMiKSkpIHsKICAgIAogICAgdGlzc3VlX3djIDwtIHN5c3RlbShwYXN0ZTAoImNkICciLCB2b2x1bWVfZGlyLCInOwogICAgICAgICAgICBmaW5kIC4gLW5hbWUgJyIsIHRpc3N1ZV9jYXRlZ29yeSwgIl9kcnVnKicgLW8gLW5hbWUgJyIsIHRpc3N1ZV9jYXRlZ29yeSwgIl9ncm9jKicgfCB4YXJncyB3YyAtbCIpLCBpbnRlcm4gPSBUUlVFKQoKICAgIHNhdmVSRFModGlzc3VlX3djLCBwYXN0ZTAoZGF0YV9kaXIsICJ0aXNzdWVfd2MuUkRTIikpCn0KYGBgCgpUaGUgdGFibGUgYmVsb3cgbGlzdHMgdGhlIGZpbGUgcGF0aHMgd2l0aGluIHRoZSBgYHIgdm9sdW1lX2RpcmBgIGZvbGRlciBhbmQgdGhlIG51bWJlciBvZiByZWNvcmRzLgoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGlzc3VlX3djIDwtIHJlYWRSRFMocGFzdGUwKGRhdGFfZGlyLCAidGlzc3VlX3djLlJEUyIpKQoKdGlzc3VlX3dlZWtseV9maWxlcyA8LSAKICAgIHRpc3N1ZV93YyAlPiUKICAgIHN0cmluZ3I6OnN0cl90cmltKHNpZGUgPSAibGVmdCIpICU+JQogICAgc3RyaW5ncjo6c3RyX3NwbGl0X2ZpeGVkKCIgIiwgbiA9IDIpICU+JQogICAgdGliYmxlOjphc190aWJibGUoKSAlPiUKICAgIHJlbmFtZShyZWNvcmRzID0gVjEsIGZpbGUgPSBWMikgJT4lCiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHMgPSBhcy5pbnRlZ2VyKHJlY29yZHMpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUocmVjb3Jkc19jbGVhbiA9IHByZXR0eU51bShyZWNvcmRzLCBiaWcubWFyayA9ICIsIikpICU+JQogICAgIyBVc2UgdGhlIGZhY3QgdGhhdCB0aGUgbGFzdCBjb3VwbGV0IG9mIDQgZGlnaXRzIGNyZWF0ZSB0aGUgcHJvcGVyIG9yZGVyaW5nCiAgICBkcGx5cjo6YXJyYW5nZShhcy5pbnRlZ2VyKHN0cl9yZXBsYWNlKHN0cl9zdWIoZmlsZSwgLTksLTEpLCAiXyIsIiIpKSkgJT4lCiAgICBkcGx5cjo6c2VsZWN0KGZpbGUsIHJlY29yZHMsIHJlY29yZHNfY2xlYW4pCgp0aXNzdWVfd2Vla2x5X2ZpbGVzICU+JSAKICAgIHNlbGVjdChmaWxlLCByZWNvcmRzX2NsZWFuKQogICAgcGFuZGVyKCkKYGBgCgojIyBDYXJib25hdGVkIEJldmVyYWdlIENhdGVnb3J5CgpXZSB0aGVuIGRvIHRoZSBzYW1lIHByb2Nlc3MgZm9yIHRoZSBjYXJib25hdGVkIGJldmVyYWdlIGNhdGVnb3J5LgoKYGBge3J9CmNhcmJiZXZfY2F0ZWdvcnkgPC0gImNhcmJiZXYiCgppZiAoIWZpbGUuZXhpc3RzKHBhc3RlMChkYXRhX2RpciwgImNhcmJiZXZfd2MuUkRTIikpKSB7CgogICAgY2FyYmJldl93YyA8LSBzeXN0ZW0ocGFzdGUwKCJjZCAnIiwgdm9sdW1lX2RpciwiJzsKICAgICAgICAgICAgICAgIGZpbmQgLiAtbmFtZSAnIiwgY2FyYmJldl9jYXRlZ29yeSwgIl9kcnVnKicgLW8gLW5hbWUgJyIsIGNhcmJiZXZfY2F0ZWdvcnksICJfZ3JvYyonIHwgeGFyZ3Mgd2MgLWwiKSwgaW50ZXJuID0gVFJVRSkKICAgIAogICAgc2F2ZVJEUyhjYXJiYmV2X3djLCBwYXN0ZTAoZGF0YV9kaXIsICJjYXJiYmV2X3djLlJEUyIpKQp9CmBgYAoKV2Ugbm90ZSB0aGUgc2l6ZSBkaWZmZXJlbmNlLiBIb3dldmVyLCB0aGVyZSBhcmUgZGlmZmVyZW50IHN1Yi1jYXRlZ29yaWVzIHdpdGhpbiB0aGUgY2FyYm9uYXRlZCBiZXZlcmFnZSBjYXRlZ29yeS4KCmBgYHtyIHJlc3VsdHMgPSAnYXNpcyd9CmNhcmJiZXZfd2MgPC0gcmVhZFJEUyhwYXN0ZTAoZGF0YV9kaXIsICJjYXJiYmV2X3djLlJEUyIpKQoKY2FyYmJldl93ZWVrbHlfZmlsZXMgPC0gCiAgICBjYXJiYmV2X3djICU+JQogICAgc3RyaW5ncjo6c3RyX3RyaW0oc2lkZSA9ICJsZWZ0IikgJT4lCiAgICBzdHJpbmdyOjpzdHJfc3BsaXRfZml4ZWQoIiAiLCBuID0gMikgJT4lCiAgICB0aWJibGU6OmFzX3RpYmJsZSgpICU+JQogICAgcmVuYW1lKHJlY29yZHMgPSBWMSwgZmlsZSA9IFYyKSAlPiUKICAgIGRwbHlyOjptdXRhdGUocmVjb3JkcyA9IGFzLmludGVnZXIocmVjb3JkcykpICU+JQogICAgZHBseXI6Om11dGF0ZShyZWNvcmRzX2NsZWFuID0gcHJldHR5TnVtKHJlY29yZHMsIGJpZy5tYXJrID0gIiwiKSkgJT4lCiAgICAjIFVzZSB0aGUgZmFjdCB0aGF0IHRoZSBsYXN0IGNvdXBsZXQgb2YgNCBkaWdpdHMgY3JlYXRlIHRoZSBwcm9wZXIgb3JkZXJpbmcKICAgIGRwbHlyOjphcnJhbmdlKGFzLmludGVnZXIoc3RyX3JlcGxhY2Uoc3RyX3N1YihmaWxlLCAtOSwtMSksICJfIiwiIikpKSAlPiUKICAgIGRwbHlyOjpzZWxlY3QoZmlsZSwgcmVjb3JkcywgcmVjb3Jkc19jbGVhbikKICAgIAoKY2FyYmJldl93ZWVrbHlfZmlsZXMgJT4lIAogICAgc2VsZWN0KGZpbGUsIHJlY29yZHNfY2xlYW4pCiAgICBwYW5kZXIoKQpgYGAKCiMgVVBDIExvb2t1cCBUYWJsZQoKTmV4dCB3ZSBsb2FkIHRoZSBVUEMgbG9va3VwIHRhYmxlcy4gRnJvbSB0aGUgZG9jdW1lbnRhdGlvbidzIGV4cGxhbmF0aW9uLCB3ZSBuZWVkIHRocmVlIGFzIHRoZSBVUEMgZGVzY3JpcHRpb25zIHdlcmUgY2hhbmdlZCBiZXR3ZWVuIHBlcmlvZHMuCgojIyBUaXNzdWUgQ2F0ZWdvcnkKCkVhY2ggVVBDIGxvb2t1cCB0YWJsZSBoYXMgdGhlIHNhbWUgc3RydWN0dXJlIChkZWZpbmVkIGluIHRoZSBkb2N1bWVudGF0aW9uKSwgc28gd2UgbG9hZCB0aGUgdGhyZWUgYW5kIGNvbWJpbmUgYW5kIGVsaW1pbmF0ZSB1bm5lY2Vzc2FyeSBjb2x1bW5zLgoKYGBge3J9CnRpc3N1ZV91cGNfeWVhcl8xX3RvXzYgPC0gCiAgICByZWFkeGw6OnJlYWRfZXhjZWwocGFzdGUwKHZvbHVtZV9kaXIsICIvcGFyc2VkIHN0dWIgZmlsZXMvcHJvZF90aXNzdWUueGxzIikpICU+JQogICAgZHBseXI6Om11dGF0ZShpcmlfeWVhciA9ICcxLTYnKQoKdGlzc3VlX3VwY195ZWFyXzcgPC0gCiAgICByZWFkeGw6OnJlYWRfZXhjZWwocGFzdGUwKHZvbHVtZV9kaXIsICIvcGFyc2VkIHN0dWIgZmlsZXMgMjAwNy9wcm9kX2ZhY3Rpc3MueGxzeCIpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUoaXJpX3llYXIgPSAnNycpCgp0aXNzdWVfdXBjX3llYXJfOF90b18xMSA8LSAKICAgIHJlYWR4bDo6cmVhZF9leGNlbChwYXN0ZTAodm9sdW1lX2RpciwgIi9wYXJzZWQgc3R1YiBmaWxlcyAyMDA4LTIwMTEvcHJvZDExX2ZhY3Rpc3MueGxzeCIpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUoaXJpX3llYXIgPSAnOC0xMScpCgp0aXNzdWVfdXBjIDwtIAogICAgYmluZF9yb3dzKAogICAgIHRpc3N1ZV91cGNfeWVhcl8xX3RvXzYsIHRpc3N1ZV91cGNfeWVhcl83LCB0aXNzdWVfdXBjX3llYXJfOF90b18xMQogICAgKSAlPiUgCiAgICByZW5hbWUoCiAgICAgICAgbGFyZ2VfY2F0ZWdvcnkgPSBMMQogICAgICAgICwgc21hbGxfY2F0ZWdvcnkgPSBMMgogICAgICAgICwgcGFyZW50X2NvbXBhbnkgPSBMMwogICAgICAgICwgdmVuZG9yID0gTDQKICAgICAgICAsIGJyYW5kID0gTDUKICAgICAgICAsIHVwYyA9IFVQQwogICAgKSAlPiUKICAgICMgVGhlc2UgcG9zaXRpb25zIGFyZSBvdXRsaW5lZCBpbiB0aGUgZG9jdW1lbnRhdGlvbgogICAgc2VsZWN0KDEsMiwzLDQsNSw4LCAxNToyMikgJT4lCiAgICBzZXROYW1lcyh0b2xvd2VyKG1ha2UubmFtZXMobmFtZXMoLikpKSkgJT4lCiAgICBzZWxlY3QoaXJpX3llYXIsIGV2ZXJ5dGhpbmcoKSkKYGBgCgpCZWxvdyBpcyBhIHRhYmxlIG9mIHRoZSBmaXJzdCAxMDAgcmVjb3Jkcy4KCmBgYHtyfQp0aXNzdWVfdXBjICU+JSAKICAgIHNlbGVjdChwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBkaXN0aW5jdCgpICU+JQogICAgYXJyYW5nZShwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBoZWFkKDEwMCkKYGBgCgojIyBDYXJib25hdGVkIEJldmVyYWdlIENhdGVnb3J5CgpgYGB7cn0KY2FyYmJldl91cGNfeWVhcl8xX3RvXzYgPC0gCiAgICByZWFkeGw6OnJlYWRfZXhjZWwocGFzdGUwKHZvbHVtZV9kaXIsICIvcGFyc2VkIHN0dWIgZmlsZXMvcHJvZF9jYXJiYmV2LnhscyIpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUoaXJpX3llYXIgPSAnMS02JykKCmNhcmJiZXZfdXBjX3llYXJfNyA8LSAKICAgIHJlYWR4bDo6cmVhZF9leGNlbChwYXN0ZTAodm9sdW1lX2RpciwgIi9wYXJzZWQgc3R1YiBmaWxlcyAyMDA3L3Byb2RfY2FyYmJldi54bHN4IikpICU+JQogICAgZHBseXI6Om11dGF0ZShpcmlfeWVhciA9ICc3JykKCmNhcmJiZXZfdXBjX3llYXJfOF90b18xMSA8LSAKICAgIHJlYWR4bDo6cmVhZF9leGNlbChwYXN0ZTAodm9sdW1lX2RpciwgIi9wYXJzZWQgc3R1YiBmaWxlcyAyMDA4LTIwMTEvcHJvZDExX2NhcmJiZXYueGxzeCIpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUoaXJpX3llYXIgPSAnOC0xMScpCgpjYXJiYmV2X3VwYyA8LSAKICAgIGJpbmRfcm93cygKICAgICBjYXJiYmV2X3VwY195ZWFyXzFfdG9fNiwgY2FyYmJldl91cGNfeWVhcl83LCBjYXJiYmV2X3VwY195ZWFyXzhfdG9fMTEKICAgICkgJT4lIAogICAgcmVuYW1lKAogICAgICAgIGxhcmdlX2NhdGVnb3J5ID0gTDEKICAgICAgICAsIHNtYWxsX2NhdGVnb3J5ID0gTDIKICAgICAgICAsIHBhcmVudF9jb21wYW55ID0gTDMKICAgICAgICAsIHZlbmRvciA9IEw0CiAgICAgICAgLCBicmFuZCA9IEw1CiAgICAgICAgLCB1cGMgPSBVUEMKICAgICkgJT4lCiAgICAjIFRoZXNlIHBvc2l0aW9ucyBhcmUgb3V0bGluZWQgaW4gdGhlIGRvY3VtZW50YXRpb24KICAgIHNlbGVjdCgxLDIsMyw0LDUsOCwgMTU6MjIpICU+JQogICAgc2V0TmFtZXModG9sb3dlcihtYWtlLm5hbWVzKG5hbWVzKC4pKSkpICU+JQogICAgc2VsZWN0KGlyaV95ZWFyLCBldmVyeXRoaW5nKCkpCmBgYAoKVGhlcmUgYXJlIHNpeCAqc3ViLWNhdGVnb3JpZXMqOgoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KY2FyYmJldl91cGMgJT4lCiAgICBncm91cF9ieShzbWFsbF9jYXRlZ29yeSkgJT4lCiAgICBzdW1tYXJpc2UoYFVQQydzYCA9IG4oKSkgJT4lCiAgICBhcnJhbmdlKGBVUEMnc2ApICU+JQogICAgcGFuZGVyKCkKYGBgCgpFdmVuIGV4Y2x1ZGluZyB0aGUgY2F0ZWdvcmllcywgdGhlcmUgYXJlIDEsMDE5ICpjb21wYW55IC8gdmVuZGVyIC8gYnJhbmQqIGNvbWJpbmF0aW9ucy4gQmVsb3cgYXJlIHRoZSBmaXJzdCAxMDA6CgpgYGB7cn0KY2FyYmJldl91cGMgJT4lIAogICAgc2VsZWN0KHBhcmVudF9jb21wYW55LCB2ZW5kb3IsIGJyYW5kKSAlPiUKICAgIGRpc3RpbmN0KCkgJT4lCiAgICBhcnJhbmdlKHBhcmVudF9jb21wYW55LCB2ZW5kb3IsIGJyYW5kKSAlPiUKICAgIGhlYWQoMjApCmBgYAoKIyBTYWxlcyBJbmZvcm1hdGlvbgoKVG8gbG9hZCB0aGUgc2FsZXMgaW5mb3JtYXRpb24gd2UgY2FuIHdyaXRlIGEgZnVuY3Rpb24gdGhhdCB3aWxsIGxvYWQgZWFjaCBmaWxlIHVzaW5nIGByZWFkX3RhYmxlYCBhbmQgdGhlbiBhZGQgdGhlIHllYXIgaW5mb3JtYXRpb24gYXMgdGhlIGZpcnN0IGNvbHVtbi4KCmBgYHtyfQpmbl9sb2FkX3dlZWtseV9maWxlIDwtIGZ1bmN0aW9uKGZpbGVuYW1lKSB7CiAgICB5ZWFyX251bSA8LSBhcy5pbnRlZ2VyKHN0cl9tYXRjaChmaWxlbmFtZSwgIlllYXIoWzpkaWdpdDpdKykiKVssIDJdKQogICAgZHJ1Z19vcl9ncm9jIDwtIHN0cl9tYXRjaChmaWxlbmFtZSwgImRydWd8Z3JvYyIpWywgMV0KICAgIGNvbHVtbl93aWR0aHMgPC0gYyg3LCA1LCAzLCAzLCA2LCA2LCA2LCA5LCA1LCAyLCAyKQogICAgY29sdW1uX25hbWVzIDwtIGMoJ0lSSV9LRVknLCdXRUVLJywnU1knLCdHRScsJ1ZFTkQnLCdJVEVNJywnVU5JVFMnLCdET0xMQVJTJywnRicsJ0QnLCdQUicpCiAgICAKICAgIHJlYWRfZndmKHBhc3RlMCh2b2x1bWVfZGlyLCBzdHJfcmVwbGFjZShmaWxlbmFtZSwgIi4iLCAiIikpLCAKICAgICAgICAgICAgIGZ3Zl93aWR0aHMoY29sdW1uX3dpZHRocywgY29sdW1uX25hbWVzKSwgc2tpcCA9IDEsIHByb2dyZXNzID0gRkFMU0UpICU+JQogICAgICAgIG11dGF0ZShpcmlfeWVhciA9IHllYXJfbnVtLCBpZCA9IHJvd19udW1iZXIoKSwgc3RvcmVfdHlwZSA9IGRydWdfb3JfZ3JvYykgJT4lCiAgICAgICAgc2VsZWN0KGlyaV95ZWFyLCBpZCwgc3RvcmVfdHlwZSwgZXZlcnl0aGluZygpKQp9Cgpmbl9pbnRlZ3JpdHlfY2hlY2sgPC0gZnVuY3Rpb24oZHQpIHsKICAgIHJlY29yZHMgPC0gZHQgJT4lIG5yb3coKQogICAgdW5pcXVlX3JlY29yZHMgPC0gCiAgICAgICAgZHQgJT4lCiAgICAgICAgc2VsZWN0KElSSV9LRVksIFdFRUssIFNZLCBHRSwgVkVORCwgSVRFTSkgJT4lCiAgICAgICAgZGlzdGluY3QoKSAlPiUKICAgICAgICBucm93KCkKICAgIHJldHVybihkYXRhX2ZyYW1lKHJlY29yZHNfcmF3ID0gcmVjb3JkcywgdW5pcXVlX3JlY29yZHMgPSB1bmlxdWVfcmVjb3JkcykpCn0KYGBgCgoKIyMgVGlzc3VlIENhdGVnb3J5CgpXZSBsb2FkIGVhY2ggb2YgdGhlIHN0b3JlIGRhdGFzZXRzIGFuZCBwZXJmb3JtIGRhdGEgaW50ZWdyaXR5IGNoZWNrcy4gV2Ugc2hvdyB0aGF0IHRoZSBudW1iZXIgb2YgcmVjb3JkcyBsb2FkIGlzIG9uZSBsZXNzIHRoYW4gd2UgZm91bmQgd2l0aCB0aGUgYHdjIC1sYCBzaGVsbCBjb21tYW5kIChkdWUgdG8gdGhlIGhlYWRlcikgYW5kIHRoYXQgdGhlIG51bWJlciBvZiByZWNvcmRzIHVuaXF1ZSBvbiBzdG9yZSAvIHdlZWsgLyB1cGMgKGBTWWAsIGBHRWAsIGBWRU5EYCwgYElURU1gKSBpcyB0aGUgdG90YWwgbnVtYmVyIG9mIHJlY29yZHMgbG9hZGVkLiAKCmBgYHtyIHJlc3VsdHMgPSAnYXNpcyd9CnRpc3N1ZV9maWxlcyA8LSB0aXNzdWVfd2Vla2x5X2ZpbGVzJGZpbGVbLWxlbmd0aCh0aXNzdWVfd2Vla2x5X2ZpbGVzJGZpbGUpXQp0aXNzdWVfZmlsZXNfbGlzdCA8LSBsYXBwbHkodGlzc3VlX2ZpbGVzLCBmbl9sb2FkX3dlZWtseV9maWxlKQp0aXNzdWVfd2Vla2x5IDwtIGJpbmRfcm93cyh0aXNzdWVfZmlsZXNfbGlzdCkKCmxhcHBseSh0aXNzdWVfZmlsZXNfbGlzdCwgZm5faW50ZWdyaXR5X2NoZWNrKSAlPiUKICAgIGJpbmRfcm93cygpICU+JQogICAgYmluZF9yb3dzKGRhdGFfZnJhbWUocmVjb3Jkc19yYXcgPSBzdW0oLiRyZWNvcmRzX3JhdyksIHVuaXF1ZV9yZWNvcmRzID0gc3VtKC4kdW5pcXVlX3JlY29yZHMpKSkgJT4lCiAgICBiaW5kX2NvbHModGlzc3VlX3dlZWtseV9maWxlcykgJT4lCiAgICBtdXRhdGUoCiAgICAgICAgIG4gPSBuKCkKICAgICAgICAgLCBgUGFzcz9gID0gaWZfZWxzZShmaWxlID09ICJ0b3RhbCIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgaWZfZWxzZShyZWNvcmRzX3JhdyA9PSAocmVjb3JkcyAtIG4gKyAxKSAmIHVuaXF1ZV9yZWNvcmRzID09IHJlY29yZHNfcmF3LCAiWWVzIiwiTm8iKSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZl9lbHNlKHJlY29yZHNfcmF3ID09IChyZWNvcmRzIC0gMSkgJiB1bmlxdWVfcmVjb3JkcyA9PSByZWNvcmRzX3JhdywgIlllcyIsIk5vIikpCiAgICApICU+JQogICAgbXV0YXRlKAogICAgICAgIGBSZWNvcmRzIExvYWRlZGAgPSBwcmV0dHlOdW0ocmVjb3Jkc19yYXcsIGJpZy5tYXJrID0gJywnKQogICAgICAgICwgYFVuaXF1ZSBvbiBTdG9yZS9XZWVrL1VQQ2AgPSBwcmV0dHlOdW0odW5pcXVlX3JlY29yZHMsIGJpZy5tYXJrID0gJywnKQogICAgKSAlPiUKICAgIHNlbGVjdChGaWxlID0gZmlsZSwgUmVjb3JkcyA9IHJlY29yZHNfY2xlYW4sIGBSZWNvcmRzIExvYWRlZGAsIGBVbmlxdWUgb24gU3RvcmUvV2Vlay9VUENgLCBgUGFzcz9gKSAlPiUKICAgIHBhbmRlcihzcGxpdC50YWJsZSA9IEluZikKYGBgCgpXZSBjYW4gc2hvdyB0aGF0IGFsbCB0aXNzdWUgVVBDJ3MgYXJlICoqYHIgdGFibGUoc2FwcGx5KHRpc3N1ZV91cGMkdXBjLCBuY2hhcikpYCBjaGFyYWN0ZXJzIGJ5IAoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGFibGUoc2FwcGx5KHRpc3N1ZV91cGMkdXBjLCBuY2hhcikpICU+JQogICAgcGFuZGVyKCkKYGBgCgpOb3cgd2UgbmVlZCB0byBjcmVhdGUgYSBVUEMgZnJvbSB0aGUgY29tcG9uZW50cyBhbmQgcHJvcGVybHkgbmFtZSB0aGUgY29sdW1ucy4KCmBgYHtyfQp0aXNzdWVfd2Vla2x5MiA8LSAKICAgIHRpc3N1ZV93ZWVrbHkgJT4lCiAgICAgICAgbXV0YXRlKAogICAgICAgICAgICB1cGMgPSBwYXN0ZShzdHJfcGFkKFNZLCB3aWR0aCA9IDIsICJsZWZ0IiwgIjAiKSwgc3RyX3BhZChHRSwgd2lkdGggPSAyLCAibGVmdCIsICIwIiksIAogICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJfcGFkKFZFTkQsIHdpZHRoID0gNSwgImxlZnQiLCAiMCIpLCBzdHJfcGFkKElURU0sIHdpZHRoID0gNSwgImxlZnQiLCAiMCIpLCBzZXAgPSAiLSIpCiAgICAgICAgICAgICwgYXZnX3ByaWNlID0gRE9MTEFSUyAvIFVOSVRTCiAgICAgICAgKSAlPiUgCiAgICAgICAgcmVuYW1lKGZlYXR1cmUgPSBgRmAsIGRpc3BsYXkgPSBELCBwcmljZV9yZWR1Y3Rpb24gPSBQUikgJT4lCiAgICAgICAgc2V0TmFtZXModG9sb3dlcihtYWtlLm5hbWVzKG5hbWVzKC4pKSkpICU+JQogICAgICAgIHNlbGVjdChpcmlfeWVhciwgaXJpX2tleSwgd2VlaywgdXBjLCB1bml0cywgZG9sbGFycywgYXZnX3ByaWNlLCBmZWF0dXJlLCBkaXNwbGF5LCBwcmljZV9yZWR1Y3Rpb24pCmBgYAoKTm93LCBsZXQncyBjaGVjayB0aGF0IHRoaXMgZGF0YXNldCBpcyBpbmRlZWQgYXQgdGhlIHN0b3JlIChpcmlfa2V5KSAtIHdlZWsgLSB1cGMgbGV2ZWwgb2YgZGV0YWlsLiAKCmBgYHtyIHJlc3VsdHMgPSAnYXNpcyd9CmRhdGFfZnJhbWUoCiAgICBgUmVjb3JkIENvdW50YCA9IHRpc3N1ZV93ZWVrbHkyICU+JSBucm93KCkKICAgICwgYFN0b3JlIC0gV2VlayAtIFVQQyBDb21iaW5hdGlvbnNgID0gdGlzc3VlX3dlZWtseTIgJT4lIHNlbGVjdChpcmlfa2V5LCB3ZWVrLCB1cGMpICU+JSBkaXN0aW5jdCgpICU+JSBucm93KCkKKSAlPiUKICAgIHBhbmRlcigpCmBgYAoKV2l0aCB0aGF0IGFzc3VyYW5jZSwgbGV0J3MgcHVsbCBpbiB0aGUgZGV0YWlscyBhYm91dCBlYWNoIFVQQy4gV2UgZG8gdGhpcyBmb3IgZWFjaCB5ZWFyIHdpbmRvdyBiZWNhdXNlIHRoZSBkb2N1bWVudGF0aW9uIGluZGljYXRlZCB0aGF0IFVQQyBpbmZvcm1hdGlvbiAocG90ZW50aWFsbHkgaW5jbHVkaW5nIGNvbXBhbnkpIGNoYW5nZWQgYmV0d2VlbiB0aGUgdGltZSB3aW5kb3dzLiBXZSB0aGVuIGRvIGEgY2hlY2sgdGhhdCBubyByZWNvcmRzIHdlcmUgZHJvcHBlZCBpbiB0aGUgYGlubmVyIGpvaW5gLgoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGlzc3VlX3dlZWtseV8xX3RvXzYgPC0gCiAgICB0aXNzdWVfd2Vla2x5MiAlPiUKICAgICAgICBmaWx0ZXIoaXJpX3llYXIgPD0gNikgJT4lCiAgICAgICAgaW5uZXJfam9pbigKICAgICAgICAgICAgdGlzc3VlX3VwYyAlPiUKICAgICAgICAgICAgICAgIGZpbHRlcihpcmlfeWVhciA9PSAiMS02IikgJT4lCiAgICAgICAgICAgICAgICBzZWxlY3QoLWlyaV95ZWFyKQogICAgICAgICAgICAsIGJ5ID0gYygidXBjIiA9ICd1cGMnKQogICAgICAgICkKCnRpc3N1ZV93ZWVrbHlfNyA8LSAKICAgIHRpc3N1ZV93ZWVrbHkyICU+JQogICAgICAgIGZpbHRlcihpcmlfeWVhciA9PSA3KSAlPiUKICAgICAgICBpbm5lcl9qb2luKAogICAgICAgICAgICB0aXNzdWVfdXBjICU+JQogICAgICAgICAgICAgICAgZmlsdGVyKGlyaV95ZWFyID09ICI3IikgJT4lCiAgICAgICAgICAgICAgICBzZWxlY3QoLWlyaV95ZWFyKQogICAgICAgICAgICAsIGJ5ID0gYygidXBjIiA9ICd1cGMnKQogICAgICAgICkKCnRpc3N1ZV93ZWVrbHlfOF90b18xMSA8LSAKICAgIHRpc3N1ZV93ZWVrbHkyICU+JQogICAgICAgIGZpbHRlcihpcmlfeWVhciA+PSA4KSAlPiUKICAgICAgICBpbm5lcl9qb2luKAogICAgICAgICAgICB0aXNzdWVfdXBjICU+JQogICAgICAgICAgICAgICAgZmlsdGVyKGlyaV95ZWFyID09ICI4LTExIikgJT4lCiAgICAgICAgICAgICAgICBzZWxlY3QoLWlyaV95ZWFyKQogICAgICAgICAgICAsIGJ5ID0gYygidXBjIiA9ICd1cGMnKQogICAgICAgICkKCmRhdGFfZnJhbWUoCiAgICBZZWFycyA9IGMoIjEtNiIsICI3IiwgIjgtMTEiKQogICAgLCBgUmVjb3JkIENvdW50IGluIFdlZWtseSBEYXRhYCA9IHNhcHBseShsaXN0KGZpbHRlcih0aXNzdWVfd2Vla2x5MiwgaXJpX3llYXIgPD0gNiksIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcih0aXNzdWVfd2Vla2x5MiwgaXJpX3llYXIgPT0gNyksIGZpbHRlcih0aXNzdWVfd2Vla2x5MiwgaXJpX3llYXIgPj0gOCkpLCBucm93KQogICAgLCBgUmVjb3JkIENvdW50IGluIEpvaW5lZCBEYXRhYCA9IHNhcHBseShsaXN0KHRpc3N1ZV93ZWVrbHlfMV90b182LCB0aXNzdWVfd2Vla2x5XzcsIHRpc3N1ZV93ZWVrbHlfOF90b18xMSksIG5yb3cpCikgJT4lCiAgICBwYW5kZXIoKQpgYGAKClRoaXMgcGFzc2VzIG91ciBkYXRhIGludGVncml0eSBjaGVjaywgc28gd2UnbGwgY29tYmluZSB0aGUgMyB0aW1lIHdpbmRvd3MgZGF0YXNldHMuCgpgYGB7cn0KdGlzc3VlX2ZpbmFsIDwtIGJpbmRfcm93cyh0aXNzdWVfd2Vla2x5XzFfdG9fNiwgdGlzc3VlX3dlZWtseV83LCB0aXNzdWVfd2Vla2x5XzhfdG9fMTEpCgp0aXNzdWVfZmluYWwgJT4lCiAgICBoZWFkKDEwKQpgYGAKCgojIyBDYXJib25hdGVkIEJldmVyYWdlIENhdGVnb3J5Cg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRHluYW1pYyBCcmFuZCBFcXVpdHkiCmRhdGU6ICdgciBmb3JtYXQoU3lzLnRpbWUoKSwgIiVCICVkLCAlWSAlSDolTSIpYCcKb3V0cHV0OgogIGh0bWxfbm90ZWJvb2s6CiAgICBjb2RlX2ZvbGRpbmc6IHNob3cKICAgIGNzczogc3R5bGUuY3NzCiAgICBudW1iZXJfc2VjdGlvbnM6IHllcwogICAgdGhlbWU6IGZsYXRseQogICAgdG9jOiB5ZXMKICAgIHRvY19mbG9hdDogeWVzCiAgICBmaWdfY2FwdGlvbjogdHJ1ZQotLS0KCiMgQmFzaWMgU2V0dXAKCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQojIFNldCBvcHRpb25zIGZvciB0aGUgcm1hcmtkb3duIGZpbGUKa25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRSwgZmlnLmFsaWduID0gJ2NlbnRlcicsIHdpZHRoID0gMTAwKQppbnZpc2libGUoU3lzLnNldGxvY2FsZSgiTENfQUxMIiwgImVuX1VTLlVURi04IikpCm9wdGlvbnMoZGlnaXRzID0gNCwgd2lkdGggPSAyMjApICMgUHJldmVudCBwcmludGluZyBpbiBzY2llbnRpZmljIG5vdGF0aW9uCmBgYAoKYGBge3J9CiMgVXNlIHBhY21hbiB0byBsb2FkIHBhY2thZ2VzCnBhY21hbjo6cF9sb2FkKHRpZHl2ZXJzZSwgc3RyaW5nciwgcGFuZGVyKQoKIyBTZXQgd29ya2luZyBkaXJlY3RvcnkgdG8gdGhlIGV4dGVybmFsIGRyaXZlIGNvbnRhaW5pbmcgdGhlIElSSSBkYXRhc2V0CnZvbHVtZV9kaXIgPC0gIi9Wb2x1bWVzL0FEU18yMzUvQWNhZGVtaWMgRGF0YXNldCBFeHRlcm5hbCIKCmJhc2VfZGlyIDwtICcnCmRhdGFfZGlyIDwtIHBhc3RlMChiYXNlX2RpciwgImRhdGEvIikKdml6X2RpciA8LSBwYXN0ZTAoYmFzZV9kaXIsICJ2aXovIikKCmRpci5jcmVhdGUoZGF0YV9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKQpkaXIuY3JlYXRlKHZpel9kaXIsIHNob3dXYXJuaW5ncyA9IEZBTFNFKQoKcGFuZGVyT3B0aW9ucygnYmlnLm1hcmsnLCAnLCcpCmBgYAoKIyBEYXRhIFNpemUgQXNzZXNzbWVudAoKQmVmb3JlIHdlIGJlZ2luIGxvYWRpbmcgZGF0YSwgbGV0J3Mgc3RhcnQgYnkgYXNzZXNzaW5nIHRoZSBkYXRhIHNpemUgb2YgZWFjaCBvZiB0aGUgc3VtbWFyeSBmaWxlcy4KCiMjIFRpc3N1ZSBDYXRlZ29yeQoKV2UgdXNlIHRoZSBzaGVsbCBjb21tYW5kIGBmaW5kIC4gLW5hbWUgIm15ZmlsZSIgfCB4YXJncyB3YyAtIGxgIHRvIHJlY3Vyc2l2ZWx5IGZpbmQgYSBmaWxlIHdpdGggYSBwYXJ0aWN1bGFyIHJlZ3VsYXIgZXhwcmVzc2lvbiBjb25zdHJ1Y3Rpb24gYW5kIHRoZW4gcGVyZm9ybSB0aGUgbGluZSBjb3VudC4KCmBgYHtyfQp0aXNzdWVfY2F0ZWdvcnkgPC0gImZhY3Rpc3MiCgppZiAoIWZpbGUuZXhpc3RzKHBhc3RlMChkYXRhX2RpciwgInRpc3N1ZV93Yy5SRFMiKSkpIHsKICAgIAogICAgdGlzc3VlX3djIDwtIHN5c3RlbShwYXN0ZTAoImNkICciLCB2b2x1bWVfZGlyLCInOwogICAgICAgICAgICBmaW5kIC4gLW5hbWUgJyIsIHRpc3N1ZV9jYXRlZ29yeSwgIl9kcnVnKicgLW8gLW5hbWUgJyIsIHRpc3N1ZV9jYXRlZ29yeSwgIl9ncm9jKicgfCB4YXJncyB3YyAtbCIpLCBpbnRlcm4gPSBUUlVFKQoKICAgIHNhdmVSRFModGlzc3VlX3djLCBwYXN0ZTAoZGF0YV9kaXIsICJ0aXNzdWVfd2MuUkRTIikpCn0KYGBgCgpUaGUgdGFibGUgYmVsb3cgbGlzdHMgdGhlIGZpbGUgcGF0aHMgd2l0aGluIHRoZSBgYHIgdm9sdW1lX2RpcmBgIGZvbGRlciBhbmQgdGhlIG51bWJlciBvZiByZWNvcmRzLgoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGlzc3VlX3djIDwtIHJlYWRSRFMocGFzdGUwKGRhdGFfZGlyLCAidGlzc3VlX3djLlJEUyIpKQoKdGlzc3VlX3dlZWtseV9maWxlcyA8LSAKICAgIHRpc3N1ZV93YyAlPiUKICAgIHN0cmluZ3I6OnN0cl90cmltKHNpZGUgPSAibGVmdCIpICU+JQogICAgc3RyaW5ncjo6c3RyX3NwbGl0X2ZpeGVkKCIgIiwgbiA9IDIpICU+JQogICAgdGliYmxlOjphc190aWJibGUoKSAlPiUKICAgIHJlbmFtZShyZWNvcmRzID0gVjEsIGZpbGUgPSBWMikgJT4lCiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHMgPSBhcy5pbnRlZ2VyKHJlY29yZHMpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUocmVjb3Jkc19jbGVhbiA9IHByZXR0eU51bShyZWNvcmRzLCBiaWcubWFyayA9ICIsIikpICU+JQogICAgIyBVc2UgdGhlIGZhY3QgdGhhdCB0aGUgbGFzdCBjb3VwbGV0IG9mIDQgZGlnaXRzIGNyZWF0ZSB0aGUgcHJvcGVyIG9yZGVyaW5nCiAgICBkcGx5cjo6YXJyYW5nZShhcy5pbnRlZ2VyKHN0cl9yZXBsYWNlKHN0cl9zdWIoZmlsZSwgLTksLTEpLCAiXyIsIiIpKSkgJT4lCiAgICBkcGx5cjo6c2VsZWN0KGZpbGUsIHJlY29yZHMsIHJlY29yZHNfY2xlYW4pCgp0aXNzdWVfd2Vla2x5X2ZpbGVzICU+JSAKICAgIHNlbGVjdChmaWxlLCByZWNvcmRzID0gcmVjb3Jkc19jbGVhbikgJT4lCiAgICBwYW5kZXIoanVzdGlmeSA9IGMoImxlZnQiLCJyaWdodCIpKQpgYGAKCiMjIENhcmJvbmF0ZWQgQmV2ZXJhZ2UgQ2F0ZWdvcnkKCldlIHRoZW4gZG8gdGhlIHNhbWUgcHJvY2VzcyBmb3IgdGhlIGNhcmJvbmF0ZWQgYmV2ZXJhZ2UgY2F0ZWdvcnkuCgpgYGB7cn0KY2FyYmJldl9jYXRlZ29yeSA8LSAiY2FyYmJldiIKCmlmICghZmlsZS5leGlzdHMocGFzdGUwKGRhdGFfZGlyLCAiY2FyYmJldl93Yy5SRFMiKSkpIHsKCiAgICBjYXJiYmV2X3djIDwtIHN5c3RlbShwYXN0ZTAoImNkICciLCB2b2x1bWVfZGlyLCInOwogICAgICAgICAgICAgICAgZmluZCAuIC1uYW1lICciLCBjYXJiYmV2X2NhdGVnb3J5LCAiX2RydWcqJyAtbyAtbmFtZSAnIiwgY2FyYmJldl9jYXRlZ29yeSwgIl9ncm9jKicgfCB4YXJncyB3YyAtbCIpLCBpbnRlcm4gPSBUUlVFKQogICAgCiAgICBzYXZlUkRTKGNhcmJiZXZfd2MsIHBhc3RlMChkYXRhX2RpciwgImNhcmJiZXZfd2MuUkRTIikpCn0KYGBgCgpXZSBub3RlIHRoZSBzaXplIGRpZmZlcmVuY2UuIEhvd2V2ZXIsIHRoZXJlIGFyZSBkaWZmZXJlbnQgc3ViLWNhdGVnb3JpZXMgd2l0aGluIHRoZSBjYXJib25hdGVkIGJldmVyYWdlIGNhdGVnb3J5LgoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KY2FyYmJldl93YyA8LSByZWFkUkRTKHBhc3RlMChkYXRhX2RpciwgImNhcmJiZXZfd2MuUkRTIikpCgpjYXJiYmV2X3dlZWtseV9maWxlcyA8LSAKICAgIGNhcmJiZXZfd2MgJT4lCiAgICBzdHJpbmdyOjpzdHJfdHJpbShzaWRlID0gImxlZnQiKSAlPiUKICAgIHN0cmluZ3I6OnN0cl9zcGxpdF9maXhlZCgiICIsIG4gPSAyKSAlPiUKICAgIHRpYmJsZTo6YXNfdGliYmxlKCkgJT4lCiAgICByZW5hbWUocmVjb3JkcyA9IFYxLCBmaWxlID0gVjIpICU+JQogICAgZHBseXI6Om11dGF0ZShyZWNvcmRzID0gYXMuaW50ZWdlcihyZWNvcmRzKSkgJT4lCiAgICBkcGx5cjo6bXV0YXRlKHJlY29yZHNfY2xlYW4gPSBwcmV0dHlOdW0ocmVjb3JkcywgYmlnLm1hcmsgPSAiLCIpKSAlPiUKICAgICMgVXNlIHRoZSBmYWN0IHRoYXQgdGhlIGxhc3QgY291cGxldCBvZiA0IGRpZ2l0cyBjcmVhdGUgdGhlIHByb3BlciBvcmRlcmluZwogICAgZHBseXI6OmFycmFuZ2UoYXMuaW50ZWdlcihzdHJfcmVwbGFjZShzdHJfc3ViKGZpbGUsIC05LC0xKSwgIl8iLCIiKSkpICU+JQogICAgZHBseXI6OnNlbGVjdChmaWxlLCByZWNvcmRzLCByZWNvcmRzX2NsZWFuKQogICAgCgpjYXJiYmV2X3dlZWtseV9maWxlcyAlPiUgCiAgICBzZWxlY3QoZmlsZSwgcmVjb3JkcyA9IHJlY29yZHNfY2xlYW4pICU+JQogICAgcGFuZGVyKGp1c3RpZnkgPSBjKCJsZWZ0IiwicmlnaHQiKSkKYGBgCgojIFVQQyBMb29rdXAgVGFibGUKCk5leHQgd2UgbG9hZCB0aGUgVVBDIGxvb2t1cCB0YWJsZXMuIEZyb20gdGhlIGRvY3VtZW50YXRpb24ncyBleHBsYW5hdGlvbiwgd2UgbmVlZCB0aHJlZSBhcyB0aGUgVVBDIGRlc2NyaXB0aW9ucyB3ZXJlIGNoYW5nZWQgYmV0d2VlbiBwZXJpb2RzLgoKIyMgVGlzc3VlIENhdGVnb3J5CgpFYWNoIFVQQyBsb29rdXAgdGFibGUgaGFzIHRoZSBzYW1lIHN0cnVjdHVyZSAoZGVmaW5lZCBpbiB0aGUgZG9jdW1lbnRhdGlvbiksIHNvIHdlIGxvYWQgdGhlIHRocmVlIGFuZCBjb21iaW5lIGFuZCBlbGltaW5hdGUgdW5uZWNlc3NhcnkgY29sdW1ucy4KCmBgYHtyfQp0aXNzdWVfdXBjX3llYXJfMV90b182IDwtIAogICAgcmVhZHhsOjpyZWFkX2V4Y2VsKHBhc3RlMCh2b2x1bWVfZGlyLCAiL3BhcnNlZCBzdHViIGZpbGVzL3Byb2RfdGlzc3VlLnhscyIpKSAlPiUKICAgIGRwbHlyOjptdXRhdGUoaXJpX3llYXIgPSAnMS02JykKCnRpc3N1ZV91cGNfeWVhcl83IDwtIAogICAgcmVhZHhsOjpyZWFkX2V4Y2VsKHBhc3RlMCh2b2x1bWVfZGlyLCAiL3BhcnNlZCBzdHViIGZpbGVzIDIwMDcvcHJvZF9mYWN0aXNzLnhsc3giKSkgJT4lCiAgICBkcGx5cjo6bXV0YXRlKGlyaV95ZWFyID0gJzcnKQoKdGlzc3VlX3VwY195ZWFyXzhfdG9fMTEgPC0gCiAgICByZWFkeGw6OnJlYWRfZXhjZWwocGFzdGUwKHZvbHVtZV9kaXIsICIvcGFyc2VkIHN0dWIgZmlsZXMgMjAwOC0yMDExL3Byb2QxMV9mYWN0aXNzLnhsc3giKSkgJT4lCiAgICBkcGx5cjo6bXV0YXRlKGlyaV95ZWFyID0gJzgtMTEnKQoKdGlzc3VlX3VwYyA8LSAKICAgIGJpbmRfcm93cygKICAgICB0aXNzdWVfdXBjX3llYXJfMV90b182LCB0aXNzdWVfdXBjX3llYXJfNywgdGlzc3VlX3VwY195ZWFyXzhfdG9fMTEKICAgICkgJT4lIAogICAgcmVuYW1lKAogICAgICAgIGxhcmdlX2NhdGVnb3J5ID0gTDEKICAgICAgICAsIHNtYWxsX2NhdGVnb3J5ID0gTDIKICAgICAgICAsIHBhcmVudF9jb21wYW55ID0gTDMKICAgICAgICAsIHZlbmRvciA9IEw0CiAgICAgICAgLCBicmFuZCA9IEw1CiAgICAgICAgLCB1cGMgPSBVUEMKICAgICkgJT4lCiAgICAjIFRoZXNlIHBvc2l0aW9ucyBhcmUgb3V0bGluZWQgaW4gdGhlIGRvY3VtZW50YXRpb24KICAgIHNlbGVjdCgxLDIsMyw0LDUsOCwgMTU6MjIpICU+JQogICAgc2V0TmFtZXModG9sb3dlcihtYWtlLm5hbWVzKG5hbWVzKC4pKSkpICU+JQogICAgc2VsZWN0KGlyaV95ZWFyLCBldmVyeXRoaW5nKCkpCmBgYAoKQmVsb3cgaXMgYSB0YWJsZSBvZiB0aGUgZmlyc3QgMjAgcmVjb3Jkcy4KCmBgYHtyfQp0aXNzdWVfdXBjICU+JSAKICAgIHNlbGVjdChwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBkaXN0aW5jdCgpICU+JQogICAgYXJyYW5nZShwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBoZWFkKDIwKQpgYGAKCiMjIENhcmJvbmF0ZWQgQmV2ZXJhZ2UgQ2F0ZWdvcnkKCmBgYHtyfQpjYXJiYmV2X3VwY195ZWFyXzFfdG9fNiA8LSAKICAgIHJlYWR4bDo6cmVhZF9leGNlbChwYXN0ZTAodm9sdW1lX2RpciwgIi9wYXJzZWQgc3R1YiBmaWxlcy9wcm9kX2NhcmJiZXYueGxzIikpICU+JQogICAgZHBseXI6Om11dGF0ZShpcmlfeWVhciA9ICcxLTYnKQoKY2FyYmJldl91cGNfeWVhcl83IDwtIAogICAgcmVhZHhsOjpyZWFkX2V4Y2VsKHBhc3RlMCh2b2x1bWVfZGlyLCAiL3BhcnNlZCBzdHViIGZpbGVzIDIwMDcvcHJvZF9jYXJiYmV2Lnhsc3giKSkgJT4lCiAgICBkcGx5cjo6bXV0YXRlKGlyaV95ZWFyID0gJzcnKQoKY2FyYmJldl91cGNfeWVhcl84X3RvXzExIDwtIAogICAgcmVhZHhsOjpyZWFkX2V4Y2VsKHBhc3RlMCh2b2x1bWVfZGlyLCAiL3BhcnNlZCBzdHViIGZpbGVzIDIwMDgtMjAxMS9wcm9kMTFfY2FyYmJldi54bHN4IikpICU+JQogICAgZHBseXI6Om11dGF0ZShpcmlfeWVhciA9ICc4LTExJykKCmNhcmJiZXZfdXBjIDwtIAogICAgYmluZF9yb3dzKAogICAgIGNhcmJiZXZfdXBjX3llYXJfMV90b182LCBjYXJiYmV2X3VwY195ZWFyXzcsIGNhcmJiZXZfdXBjX3llYXJfOF90b18xMQogICAgKSAlPiUgCiAgICByZW5hbWUoCiAgICAgICAgbGFyZ2VfY2F0ZWdvcnkgPSBMMQogICAgICAgICwgc21hbGxfY2F0ZWdvcnkgPSBMMgogICAgICAgICwgcGFyZW50X2NvbXBhbnkgPSBMMwogICAgICAgICwgdmVuZG9yID0gTDQKICAgICAgICAsIGJyYW5kID0gTDUKICAgICAgICAsIHVwYyA9IFVQQwogICAgKSAlPiUKICAgICMgVGhlc2UgcG9zaXRpb25zIGFyZSBvdXRsaW5lZCBpbiB0aGUgZG9jdW1lbnRhdGlvbgogICAgc2VsZWN0KDEsMiwzLDQsNSw4LCAxNToyMikgJT4lCiAgICBzZXROYW1lcyh0b2xvd2VyKG1ha2UubmFtZXMobmFtZXMoLikpKSkgJT4lCiAgICBzZWxlY3QoaXJpX3llYXIsIGV2ZXJ5dGhpbmcoKSkKYGBgCgpUaGVyZSBhcmUgc2l4ICpzdWItY2F0ZWdvcmllcyo6CgpgYGB7ciByZXN1bHRzID0gJ2FzaXMnfQpjYXJiYmV2X3VwYyAlPiUKICAgIGdyb3VwX2J5KHNtYWxsX2NhdGVnb3J5KSAlPiUKICAgIHN1bW1hcmlzZShgVVBDJ3NgID0gbigpKSAlPiUKICAgIGFycmFuZ2UoZGVzYyhgVVBDJ3NgKSkgJT4lCiAgICBwYW5kb2MudGFibGUoanVzdGlmeSA9IGMoImxlZnQiLCJyaWdodCIpKQpgYGAKCkV2ZW4gZXhjbHVkaW5nIHRoZSBjYXRlZ29yaWVzLCB0aGVyZSBhcmUgMSwwMTkgKmNvbXBhbnkgLyB2ZW5kZXIgLyBicmFuZCogY29tYmluYXRpb25zLiBCZWxvdyBhcmUgdGhlIGZpcnN0IDIwOgoKYGBge3J9CmNhcmJiZXZfdXBjICU+JSAKICAgIHNlbGVjdChwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBkaXN0aW5jdCgpICU+JQogICAgYXJyYW5nZShwYXJlbnRfY29tcGFueSwgdmVuZG9yLCBicmFuZCkgJT4lCiAgICBoZWFkKDIwKQpgYGAKCiMgU2FsZXMgSW5mb3JtYXRpb24KClRvIGxvYWQgdGhlIHNhbGVzIGluZm9ybWF0aW9uIHdlIGNhbiB3cml0ZSBhIGZ1bmN0aW9uIHRoYXQgd2lsbCBsb2FkIGVhY2ggZmlsZSB1c2luZyBgcmVhZF9md2ZgICh3aXRoIHRoZSBjb2x1bW4gd2lkdGhzIGZvdW5kIGJ5IHJldmlld2luZyB0aGUgZmlsZXMpLiBXZSBkbyBub3QgdXNlIGByZWFkX3RhYmxlYCBhcyB0aGlzIGNhbiBwb3RlbnRpYWxseSBiZSB1bnJlbGlhYmxlIHdpdGggbGFyZ2UgZGF0YXNldHMgKHNlZSBbSGFkbHkncyBjb21tZW50XShodHRwczovL2dpdGh1Yi5jb20vdGlkeXZlcnNlL3JlYWRyL2lzc3Vlcy81MTgjaXNzdWVjb21tZW50LTI2ODg3MjUzOCkpLiBXZSBhbHNvIGFkZCB0aGUgeWVhciwgc3RvcmUgdHlwZSwgYW5kIElEIChyb3cgbnVtYmVyIGZvciByZWZlcmVuY2UpIGFzIHByZWNlZGluZyBjb2x1bW5zLgoKYGBge3J9CmZuX2xvYWRfd2Vla2x5X2ZpbGUgPC0gZnVuY3Rpb24oZmlsZW5hbWUpIHsKICAgIHllYXJfbnVtIDwtIGFzLmludGVnZXIoc3RyX21hdGNoKGZpbGVuYW1lLCAiWWVhcihbOmRpZ2l0Ol0rKSIpWywgMl0pCiAgICBkcnVnX29yX2dyb2MgPC0gc3RyX21hdGNoKGZpbGVuYW1lLCAiZHJ1Z3xncm9jIilbLCAxXQogICAgY29sdW1uX3dpZHRocyA8LSBjKDcsIDUsIDMsIDMsIDYsIDYsIDYsIDksIDUsIDIsIDIpCiAgICBjb2x1bW5fbmFtZXMgPC0gYygnSVJJX0tFWScsJ1dFRUsnLCdTWScsJ0dFJywnVkVORCcsJ0lURU0nLCdVTklUUycsJ0RPTExBUlMnLCdGJywnRCcsJ1BSJykKICAgIGNvbHVtbl90eXBlcyA8LSBjb2xzKAogICAgICAgICAgICAgICAgICAgICAgSVJJX0tFWSA9IGNvbF9jaGFyYWN0ZXIoKSwKICAgICAgICAgICAgICAgICAgICAgIFdFRUsgPSBjb2xfaW50ZWdlcigpLAogICAgICAgICAgICAgICAgICAgICAgU1kgPSBjb2xfY2hhcmFjdGVyKCksCiAgICAgICAgICAgICAgICAgICAgICBHRSA9IGNvbF9jaGFyYWN0ZXIoKSwKICAgICAgICAgICAgICAgICAgICAgIFZFTkQgPSBjb2xfY2hhcmFjdGVyKCksCiAgICAgICAgICAgICAgICAgICAgICBJVEVNID0gY29sX2NoYXJhY3RlcigpLAogICAgICAgICAgICAgICAgICAgICAgVU5JVFMgPSBjb2xfaW50ZWdlcigpLAogICAgICAgICAgICAgICAgICAgICAgRE9MTEFSUyA9IGNvbF9kb3VibGUoKSwKICAgICAgICAgICAgICAgICAgICAgIGBGYCA9IGNvbF9jaGFyYWN0ZXIoKSwKICAgICAgICAgICAgICAgICAgICAgIEQgPSBjb2xfaW50ZWdlcigpLAogICAgICAgICAgICAgICAgICAgICAgUFIgPSBjb2xfaW50ZWdlcigpCiAgICAgICAgICAgICAgICAgICAgKQogICAgCiAgICByZWFkX2Z3ZihwYXN0ZTAodm9sdW1lX2Rpciwgc3RyX3JlcGxhY2UoZmlsZW5hbWUsICIuIiwgIiIpKSwgCiAgICAgICAgICAgICBmd2Zfd2lkdGhzKGNvbHVtbl93aWR0aHMsIGNvbHVtbl9uYW1lcyksIGNvbF90eXBlcyA9IGNvbHVtbl90eXBlcywKICAgICAgICAgICAgIHNraXAgPSAxLCBwcm9ncmVzcyA9IEZBTFNFKSAlPiUKICAgICAgICBtdXRhdGUoaXJpX3llYXIgPSB5ZWFyX251bSwgaWQgPSByb3dfbnVtYmVyKCksIHN0b3JlX3R5cGUgPSBkcnVnX29yX2dyb2MpICU+JQogICAgICAgIHNlbGVjdChpcmlfeWVhciwgaWQsIHN0b3JlX3R5cGUsIGV2ZXJ5dGhpbmcoKSkKfQoKZm5faW50ZWdyaXR5X2NoZWNrIDwtIGZ1bmN0aW9uKGR0KSB7CiAgICByZWNvcmRzIDwtIGR0ICU+JSBucm93KCkKICAgIHVuaXF1ZV9yZWNvcmRzIDwtIAogICAgICAgIGR0ICU+JQogICAgICAgIHNlbGVjdChJUklfS0VZLCBXRUVLLCBTWSwgR0UsIFZFTkQsIElURU0pICU+JQogICAgICAgIGRpc3RpbmN0KCkgJT4lCiAgICAgICAgbnJvdygpCiAgICByZXR1cm4oZGF0YV9mcmFtZShyZWNvcmRzX3JhdyA9IHJlY29yZHMsIHVuaXF1ZV9yZWNvcmRzID0gdW5pcXVlX3JlY29yZHMpKQp9CmBgYAoKIyMgVGlzc3VlIENhdGVnb3J5CgpXZSBsb2FkIGVhY2ggb2YgdGhlIHN0b3JlIGRhdGFzZXRzIGFuZCBwZXJmb3JtIGRhdGEgaW50ZWdyaXR5IGNoZWNrcy4gV2Ugc2hvdyB0aGF0IHRoZSBudW1iZXIgb2YgcmVjb3JkcyBsb2FkZWQgaXMgb25lIGxlc3MgdGhhbiB3ZSBmb3VuZCB3aXRoIHRoZSBgd2MgLWxgIHNoZWxsIGNvbW1hbmQgKGR1ZSB0byB0aGUgaGVhZGVyKSBhbmQgdGhhdCB0aGUgbnVtYmVyIG9mIHJlY29yZHMgdW5pcXVlIG9uIHN0b3JlIC8gd2VlayAvIHVwYyAoYFNZYCwgYEdFYCwgYFZFTkRgLCBgSVRFTWApIGlzIHRoZSB0b3RhbCBudW1iZXIgb2YgcmVjb3JkcyBsb2FkZWQuIAoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGlzc3VlX2ZpbGVzIDwtIHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZVstbGVuZ3RoKHRpc3N1ZV93ZWVrbHlfZmlsZXMkZmlsZSldCnRpc3N1ZV9maWxlc19saXN0IDwtIGxhcHBseSh0aXNzdWVfZmlsZXMsIGZuX2xvYWRfd2Vla2x5X2ZpbGUpCnRpc3N1ZV93ZWVrbHkgPC0gYmluZF9yb3dzKHRpc3N1ZV9maWxlc19saXN0KQoKbGFwcGx5KHRpc3N1ZV9maWxlc19saXN0LCBmbl9pbnRlZ3JpdHlfY2hlY2spICU+JQogICAgYmluZF9yb3dzKCkgJT4lCiAgICBiaW5kX3Jvd3MoZGF0YV9mcmFtZShyZWNvcmRzX3JhdyA9IHN1bSguJHJlY29yZHNfcmF3KSwgdW5pcXVlX3JlY29yZHMgPSBzdW0oLiR1bmlxdWVfcmVjb3JkcykpKSAlPiUKICAgIGJpbmRfY29scyh0aXNzdWVfd2Vla2x5X2ZpbGVzKSAlPiUKICAgIG11dGF0ZSgKICAgICAgICAgbiA9IG4oKQogICAgICAgICAsIGBQYXNzP2AgPSBpZl9lbHNlKGZpbGUgPT0gInRvdGFsIiwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZl9lbHNlKHJlY29yZHNfcmF3ID09IChyZWNvcmRzIC0gbiArIDEpICYgdW5pcXVlX3JlY29yZHMgPT0gcmVjb3Jkc19yYXcsICJZZXMiLCJObyIpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlmX2Vsc2UocmVjb3Jkc19yYXcgPT0gKHJlY29yZHMgLSAxKSAmIHVuaXF1ZV9yZWNvcmRzID09IHJlY29yZHNfcmF3LCAiWWVzIiwiTm8iKSkKICAgICkgJT4lCiAgICBzZWxlY3QoRmlsZSA9IGZpbGUsIFJlY29yZHMgPSByZWNvcmRzX2NsZWFuLCBgUmVjb3JkcyBMb2FkZWRgID0gcmVjb3Jkc19yYXcsIAogICAgICAgICAgIGBVbmlxdWUgb24gU3RvcmUvV2Vlay9VUENgID0gdW5pcXVlX3JlY29yZHMsIGBQYXNzP2ApICU+JQogICAgcGFuZGVyKHNwbGl0LnRhYmxlID0gSW5mLCBqdXN0aWZ5ID0gYygnbGVmdCcsICdyaWdodCcsJ3JpZ2h0JywncmlnaHQnLCdjZW50ZXInKSkKYGBgCgpXZSBhcmUgZ29pbmcgdG8gY29uc3RydWN0IGEgVVBDIGNvbHVtbiBmcm9tIHRoZSBjb2x1bW5zIFNZLCBHRSwgVkVORCwgYW5kIElURU0gaW4gdGhlIHNhbGVzIGluZm9ybWF0aW9uIHRhYmxlLiBXZSBjYW4gc2hvdyB0aGF0IGFsbCB0aXNzdWUgVVBDJ3MgaW4gdGhlIFVQQyBMb29rdXAgVGFibGUgYXJlICoqYHIgdGFibGUoc2FwcGx5KHRpc3N1ZV91cGMkdXBjLCBuY2hhcikpYCoqIGNoYXJhY3RlcnMgbG9uZyBieQoKYGBge3IgcmVzdWx0cyA9ICdhc2lzJ30KdGFibGUoc2FwcGx5KHRpc3N1ZV91cGMkdXBjLCBuY2hhcikpICU+JQogICAgcGFuZGVyKCkKYGBgCgpXZSBjcmVhdGUgYSBVUEMgZnJvbSB0aGUgY29tcG9uZW50cyBhbmQgcHJvcGVybHkgbmFtZSB0aGUgY29sdW1ucy4KCmBgYHtyfQp0aXNzdWVfd2Vla2x5MiA8LSAKICAgIHRpc3N1ZV93ZWVrbHkgJT4lCiAgICAgICAgbXV0YXRlKAogICAgICAgICAgICB1cGMgPSBwYXN0ZShzdHJfcGFkKFNZLCB3aWR0aCA9IDIsICJsZWZ0IiwgIjAiKSwgc3RyX3BhZChHRSwgd2lkdGggPSAyLCAibGVmdCIsICIwIiksIAogICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJfcGFkKFZFTkQsIHdpZHRoID0gNSwgImxlZnQiLCAiMCIpLCBzdHJfcGFkKElURU0sIHdpZHRoID0gNSwgImxlZnQiLCAiMCIpLCBzZXAgPSAiLSIpCiAgICAgICAgICAgICwgYXZnX3ByaWNlID0gRE9MTEFSUyAvIFVOSVRTCiAgICAgICAgKSAlPiUgCiAgICAgICAgcmVuYW1lKGZlYXR1cmUgPSBgRmAsIGRpc3BsYXkgPSBELCBwcmljZV9yZWR1Y3Rpb24gPSBQUikgJT4lCiAgICAgICAgc2V0TmFtZXModG9sb3dlcihtYWtlLm5hbWVzKG5hbWVzKC4pKSkpICU+JQogICAgICAgIHNlbGVjdChpcmlfeWVhciwgaXJpX2tleSwgd2VlaywgdXBjLCB1bml0cywgZG9sbGFycywgYXZnX3ByaWNlLCBmZWF0dXJlLCBkaXNwbGF5LCBwcmljZV9yZWR1Y3Rpb24pCmBgYAoKTm93LCBsZXQncyB2ZXJpZnkgYWdhaW4gdGhhdCB0aGlzIGRhdGFzZXQgaXMgaW5kZWVkIGF0IHRoZSBzdG9yZSAoaXJpX2tleSkgLSB3ZWVrIC0gVVBDIGxldmVsIG9mIGRldGFpbCwgd2l0aCB0aGUgbmV3IFVQQyBjb2x1bW4uCgpgYGB7ciByZXN1bHRzID0gJ2FzaXMnfQpkYXRhX2ZyYW1lKAogICAgYFJlY29yZCBDb3VudGAgPSB0aXNzdWVfd2Vla2x5MiAlPiUgbnJvdygpCiAgICAsIGBTdG9yZSAtIFdlZWsgLSBVUEMgQ29tYmluYXRpb25zYCA9IHRpc3N1ZV93ZWVrbHkyICU+JSBzZWxlY3QoaXJpX2tleSwgd2VlaywgdXBjKSAlPiUgZGlzdGluY3QoKSAlPiUgbnJvdygpCikgJT4lCiAgICBwYW5kZXIoKQpgYGAKCldpdGggdGhhdCBhc3N1cmFuY2UsIGxldCdzIHB1bGwgaW4gdGhlIGRldGFpbHMgYWJvdXQgZWFjaCBVUEMuIFdlIGRvIHRoaXMgZm9yIGVhY2ggeWVhciB3aW5kb3cgYmVjYXVzZSB0aGUgZG9jdW1lbnRhdGlvbiBpbmRpY2F0ZWQgdGhhdCBVUEMgaW5mb3JtYXRpb24gKHBvdGVudGlhbGx5IGluY2x1ZGluZyBjb21wYW55KSBjaGFuZ2VkIGJldHdlZW4gdGhlIHRpbWUgd2luZG93cy4gV2UgdGhlbiBkbyBhIGNoZWNrIHRoYXQgbm8gcmVjb3JkcyB3ZXJlIGRyb3BwZWQgaW4gdGhlIGBpbm5lciBqb2luYC4KCmBgYHtyIHJlc3VsdHMgPSAnYXNpcyd9CnRpc3N1ZV93ZWVrbHlfMV90b182IDwtIAogICAgdGlzc3VlX3dlZWtseTIgJT4lCiAgICAgICAgZmlsdGVyKGlyaV95ZWFyIDw9IDYpICU+JQogICAgICAgIGlubmVyX2pvaW4oCiAgICAgICAgICAgIHRpc3N1ZV91cGMgJT4lCiAgICAgICAgICAgICAgICBmaWx0ZXIoaXJpX3llYXIgPT0gIjEtNiIpICU+JQogICAgICAgICAgICAgICAgc2VsZWN0KC1pcmlfeWVhcikKICAgICAgICAgICAgLCBieSA9IGMoInVwYyIgPSAndXBjJykKICAgICAgICApCgp0aXNzdWVfd2Vla2x5XzcgPC0gCiAgICB0aXNzdWVfd2Vla2x5MiAlPiUKICAgICAgICBmaWx0ZXIoaXJpX3llYXIgPT0gNykgJT4lCiAgICAgICAgaW5uZXJfam9pbigKICAgICAgICAgICAgdGlzc3VlX3VwYyAlPiUKICAgICAgICAgICAgICAgIGZpbHRlcihpcmlfeWVhciA9PSAiNyIpICU+JQogICAgICAgICAgICAgICAgc2VsZWN0KC1pcmlfeWVhcikKICAgICAgICAgICAgLCBieSA9IGMoInVwYyIgPSAndXBjJykKICAgICAgICApCgp0aXNzdWVfd2Vla2x5XzhfdG9fMTEgPC0gCiAgICB0aXNzdWVfd2Vla2x5MiAlPiUKICAgICAgICBmaWx0ZXIoaXJpX3llYXIgPj0gOCkgJT4lCiAgICAgICAgaW5uZXJfam9pbigKICAgICAgICAgICAgdGlzc3VlX3VwYyAlPiUKICAgICAgICAgICAgICAgIGZpbHRlcihpcmlfeWVhciA9PSAiOC0xMSIpICU+JQogICAgICAgICAgICAgICAgc2VsZWN0KC1pcmlfeWVhcikKICAgICAgICAgICAgLCBieSA9IGMoInVwYyIgPSAndXBjJykKICAgICAgICApCgpkYXRhX2ZyYW1lKAogICAgWWVhcnMgPSBjKCIxLTYiLCAiNyIsICI4LTExIikKICAgICwgYFJlY29yZCBDb3VudCBpbiBXZWVrbHkgRGF0YWAgPSBzYXBwbHkobGlzdChmaWx0ZXIodGlzc3VlX3dlZWtseTIsIGlyaV95ZWFyIDw9IDYpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmaWx0ZXIodGlzc3VlX3dlZWtseTIsIGlyaV95ZWFyID09IDcpLCBmaWx0ZXIodGlzc3VlX3dlZWtseTIsIGlyaV95ZWFyID49IDgpKSwgbnJvdykKICAgICwgYFJlY29yZCBDb3VudCBpbiBKb2luZWQgRGF0YWAgPSBzYXBwbHkobGlzdCh0aXNzdWVfd2Vla2x5XzFfdG9fNiwgdGlzc3VlX3dlZWtseV83LCB0aXNzdWVfd2Vla2x5XzhfdG9fMTEpLCBucm93KQopICU+JQogICAgcGFuZGVyKCkKYGBgCgpUaGlzIHBhc3NlcyBvdXIgZGF0YSBpbnRlZ3JpdHkgY2hlY2ssIHNvIHdlJ2xsIGNvbWJpbmUgdGhlIDMgdGltZSB3aW5kb3dzIGRhdGFzZXRzLgoKYGBge3J9CnRpc3N1ZV9maW5hbCA8LSBiaW5kX3Jvd3ModGlzc3VlX3dlZWtseV8xX3RvXzYsIHRpc3N1ZV93ZWVrbHlfNywgdGlzc3VlX3dlZWtseV84X3RvXzExKQoKdGlzc3VlX2ZpbmFsICU+JQogICAgaGVhZCgyMCkKYGBgCgoKIyMgQ2FyYm9uYXRlZCBCZXZlcmFnZSBDYXRlZ29yeQo=</div>
 
 
 </div>
