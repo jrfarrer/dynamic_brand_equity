@@ -128,34 +128,46 @@ Next we load the UPC lookup tables. From the documentation's explanation, we nee
 Each UPC lookup table has the same structure (defined in the documentation), so we load the three and combine and eliminate unnecessary columns.
 
 ```{r}
-tissue_upc_year_1_to_6 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_tissue.xls")) %>%
-    dplyr::mutate(iri_year = '1-6')
+fn_tissue_upc <- function(volume_dir) {
+    tissue_upc_year_1_to_6 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_tissue.xls")) %>%
+        dplyr::mutate(iri_year = '1-6')
+    
+    tissue_upc_year_7 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_factiss.xlsx")) %>%
+        dplyr::mutate(iri_year = '7')
+    
+    tissue_upc_year_8_to_11 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_factiss.xlsx")) %>%
+        dplyr::mutate(iri_year = '8-11')
+    
+    tissue_upc <- 
+        bind_rows(
+         tissue_upc_year_1_to_6, tissue_upc_year_7, tissue_upc_year_8_to_11
+        ) %>% 
+        rename(
+            large_category = L1
+            , small_category = L2
+            , parent_company = L3
+            , vendor = L4
+            , brand = L5
+            , upc = UPC
+        ) %>%
+        # These positions are outlined in the documentation
+        select(1,2,3,4,5,8, 15:22) %>%
+        setNames(tolower(make.names(names(.)))) %>%
+        select(iri_year, everything())
+    
+    return(tissue_upc)
+}
 
-tissue_upc_year_7 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_factiss.xlsx")) %>%
-    dplyr::mutate(iri_year = '7')
+if (!file.exists(paste0(data_dir, "tissue_upc.RDS"))) {
 
-tissue_upc_year_8_to_11 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_factiss.xlsx")) %>%
-    dplyr::mutate(iri_year = '8-11')
-
-tissue_upc <- 
-    bind_rows(
-     tissue_upc_year_1_to_6, tissue_upc_year_7, tissue_upc_year_8_to_11
-    ) %>% 
-    rename(
-        large_category = L1
-        , small_category = L2
-        , parent_company = L3
-        , vendor = L4
-        , brand = L5
-        , upc = UPC
-    ) %>%
-    # These positions are outlined in the documentation
-    select(1,2,3,4,5,8, 15:22) %>%
-    setNames(tolower(make.names(names(.)))) %>%
-    select(iri_year, everything())
+    tissue_upc <- fn_tissue_upc(volume_dir)
+    saveRDS(tissue_upc, paste0(data_dir, "tissue_upc.RDS"))
+} else {
+    tissue_upc <- readRDS(paste0(data_dir, "tissue_upc.RDS"))
+}
 ```
 
 Below is a table of the first 20 records.
@@ -168,37 +180,59 @@ tissue_upc %>%
     head(20)
 ```
 
+```{r}
+tissue_upc %>%
+    select(parent_company, vendor, brand) %>%
+    distinct() %>%
+    write_csv(path = paste0(data_dir, 'tissue_brands.csv'))
+```
+
+
+
 ## Carbonated Beverage Category
 
 ```{r}
-carbbev_upc_year_1_to_6 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_carbbev.xls")) %>%
-    dplyr::mutate(iri_year = '1-6')
+fn_carbbev_upc <- function(volume_dir) {
 
-carbbev_upc_year_7 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_carbbev.xlsx")) %>%
-    dplyr::mutate(iri_year = '7')
+    carbbev_upc_year_1_to_6 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files/prod_carbbev.xls")) %>%
+        dplyr::mutate(iri_year = '1-6')
+    
+    carbbev_upc_year_7 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files 2007/prod_carbbev.xlsx")) %>%
+        dplyr::mutate(iri_year = '7')
+    
+    carbbev_upc_year_8_to_11 <- 
+        readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_carbbev.xlsx")) %>%
+        dplyr::mutate(iri_year = '8-11')
+    
+    carbbev_upc <- 
+        bind_rows(
+         carbbev_upc_year_1_to_6, carbbev_upc_year_7, carbbev_upc_year_8_to_11
+        ) %>% 
+        rename(
+            large_category = L1
+            , small_category = L2
+            , parent_company = L3
+            , vendor = L4
+            , brand = L5
+            , upc = UPC
+        ) %>%
+        # These positions are outlined in the documentation
+        select(1,2,3,4,5,8, 15:22) %>%
+        setNames(tolower(make.names(names(.)))) %>%
+        select(iri_year, everything())
+    
+    return(carbbev_upc)
+}
 
-carbbev_upc_year_8_to_11 <- 
-    readxl::read_excel(paste0(volume_dir, "/parsed stub files 2008-2011/prod11_carbbev.xlsx")) %>%
-    dplyr::mutate(iri_year = '8-11')
+if (!file.exists(paste0(data_dir, "carbbev_upc.RDS"))) {
 
-carbbev_upc <- 
-    bind_rows(
-     carbbev_upc_year_1_to_6, carbbev_upc_year_7, carbbev_upc_year_8_to_11
-    ) %>% 
-    rename(
-        large_category = L1
-        , small_category = L2
-        , parent_company = L3
-        , vendor = L4
-        , brand = L5
-        , upc = UPC
-    ) %>%
-    # These positions are outlined in the documentation
-    select(1,2,3,4,5,8, 15:22) %>%
-    setNames(tolower(make.names(names(.)))) %>%
-    select(iri_year, everything())
+    carbbev_upc <- fn_tissue_upc(volume_dir)
+    saveRDS(carbbev_upc, paste0(data_dir, "carbbev_upc.RDS"))
+} else {
+    carbbev_upc <- readRDS(paste0(data_dir, "carbbev_upc.RDS"))
+}
 ```
 
 There are six *sub-categories*:
@@ -226,7 +260,7 @@ carbbev_upc %>%
 To load the sales information we can write a function that will load each file using `read_fwf` (with the column widths found by reviewing the files). We do not use `read_table` as this can potentially be unreliable with large datasets (see [Hadly's comment](https://github.com/tidyverse/readr/issues/518#issuecomment-268872538)). We also add the year, store type, and ID (row number for reference) as preceding columns.
 
 ```{r}
-fn_load_weekly_file <- function(filename) {
+fn_load_weekly_file <- function(filename, volume_dir) {
     year_num <- as.integer(str_match(filename, "Year([:digit:]+)")[, 2])
     drug_or_groc <- str_match(filename, "drug|groc")[, 1]
     column_widths <- c(7, 5, 3, 3, 6, 6, 6, 9, 5, 2, 2)
@@ -261,6 +295,20 @@ fn_integrity_check <- function(dt) {
         nrow()
     return(data_frame(records_raw = records, unique_records = unique_records))
 }
+
+fn_tissue_data_loading <- function(tissue_weekly_files, volumne_dir, data_dir) {
+    tissue_files <- tissue_weekly_files$file[-length(tissue_weekly_files$file)]
+    tissue_files_list <- lapply(tissue_files, fn_load_weekly_file, volume_dir)
+    tissue_weekly <- bind_rows(tissue_files_list)
+    
+    tissue_integrity_check <- 
+        lapply(tissue_files_list, fn_integrity_check) %>%
+        bind_rows() %>%
+        bind_rows(data_frame(records_raw = sum(.$records_raw), unique_records = sum(.$unique_records)))
+    
+    saveRDS(tissue_integrity_check, paste0(data_dir, 'tissue_integrity_check.RDS'))
+    saveRDS(tissue_weekly, paste0(data_dir, 'tissue_weekly.RDS'))
+} 
 ```
 
 ## Tissue Category
@@ -268,13 +316,13 @@ fn_integrity_check <- function(dt) {
 We load each of the store datasets and perform data integrity checks. We show that the number of records loaded is one less than we found with the `wc -l` shell command (due to the header) and that the number of records unique on store / week / upc (`SY`, `GE`, `VEND`, `ITEM`) is the total number of records loaded. 
 
 ```{r results = 'asis'}
-tissue_files <- tissue_weekly_files$file[-length(tissue_weekly_files$file)]
-tissue_files_list <- lapply(tissue_files, fn_load_weekly_file)
-tissue_weekly <- bind_rows(tissue_files_list)
+if (!(file.exists(paste0(data_dir, "tissue_integrity_check.RDS")) || file.exists(paste0(data_dir, "tissue_weekly.RDS")))) {
+    fn_tissue_data_loading(tissue_weekly_files, volumne_dir, data_dir)
+}
+tissue_integrity_check <- readRDS(paste0(data_dir, 'tissue_integrity_check.RDS'))
+tissue_weekly <- readRDS(paste0(data_dir, 'tissue_weekly.RDS'))
 
-lapply(tissue_files_list, fn_integrity_check) %>%
-    bind_rows() %>%
-    bind_rows(data_frame(records_raw = sum(.$records_raw), unique_records = sum(.$unique_records))) %>%
+tissue_integrity_check %>%
     bind_cols(tissue_weekly_files) %>%
     mutate(
          n = n()
