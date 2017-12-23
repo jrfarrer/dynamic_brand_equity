@@ -1,1 +1,3 @@
-See [jrfarrer.github.io/dynamic_brand_equity](http://jrfarrer.github.io/dynamic_brand_equity)
+# Dynamic Brand Equity
+Assisted Wharton professors with data analysis for a paper on the changing of brand value over time
+![](dynamic_brand_equity.png)
